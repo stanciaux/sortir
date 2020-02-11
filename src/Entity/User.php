@@ -16,6 +16,10 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -37,6 +41,8 @@ class User implements UserInterface
     {
         return $this->id;
     }
+
+    
 
     public function getEmail(): ?string
     {
@@ -109,5 +115,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 }
