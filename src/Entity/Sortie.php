@@ -17,11 +17,6 @@ class Sortie
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $no_sortie;
-
-    /**
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
@@ -29,7 +24,7 @@ class Sortie
     /**
      * @ORM\Column(type="date")
      */
-    private $datedebut;
+    private $dateDebut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -39,22 +34,17 @@ class Sortie
     /**
      * @ORM\Column(type="date")
      */
-    private $datecloture;
+    private $dateCloture;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbinscriptionsmax;
+    private $nbInscriptionsMax;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $descriptioninfos;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $etatsortie;
+    private $descriptionInfos;
 
     /**
      * @ORM\Column(type="string", length=250, nullable=true)
@@ -62,53 +52,14 @@ class Sortie
     private $urlPhoto;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $organisateur;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $lieux_no_lieu;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $etats_no_etat;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="sortie")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $sorties;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $etat;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $lieu;
+    private $site;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNoSortie(): ?int
-    {
-        return $this->no_sortie;
-    }
-
-    public function setNoSortie(int $no_sortie): self
-    {
-        $this->no_sortie = $no_sortie;
-
-        return $this;
     }
 
     public function getNom(): ?string
@@ -123,14 +74,14 @@ class Sortie
         return $this;
     }
 
-    public function getDatedebut(): ?\DateTimeInterface
+    public function getDateDebut(): ?\DateTimeInterface
     {
-        return $this->datedebut;
+        return $this->dateDebut;
     }
 
-    public function setDatedebut(\DateTimeInterface $datedebut): self
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
     {
-        $this->datedebut = $datedebut;
+        $this->dateDebut = $dateDebut;
 
         return $this;
     }
@@ -147,50 +98,38 @@ class Sortie
         return $this;
     }
 
-    public function getDatecloture(): ?\DateTimeInterface
+    public function getDateCloture(): ?\DateTimeInterface
     {
-        return $this->datecloture;
+        return $this->dateCloture;
     }
 
-    public function setDatecloture(\DateTimeInterface $datecloture): self
+    public function setDateCloture(\DateTimeInterface $dateCloture): self
     {
-        $this->datecloture = $datecloture;
+        $this->dateCloture = $dateCloture;
 
         return $this;
     }
 
-    public function getNbinscriptionsmax(): ?int
+    public function getNbInscriptionsMax(): ?int
     {
-        return $this->nbinscriptionsmax;
+        return $this->nbInscriptionsMax;
     }
 
-    public function setNbinscriptionsmax(int $nbinscriptionsmax): self
+    public function setNbInscriptionsMax(int $nbInscriptionsMax): self
     {
-        $this->nbinscriptionsmax = $nbinscriptionsmax;
+        $this->nbInscriptionsMax = $nbInscriptionsMax;
 
         return $this;
     }
 
-    public function getDescriptioninfos(): ?string
+    public function getDescriptionInfos(): ?string
     {
-        return $this->descriptioninfos;
+        return $this->descriptionInfos;
     }
 
-    public function setDescriptioninfos(?string $descriptioninfos): self
+    public function setDescriptionInfos(?string $descriptionInfos): self
     {
-        $this->descriptioninfos = $descriptioninfos;
-
-        return $this;
-    }
-
-    public function getEtatsortie(): ?int
-    {
-        return $this->etatsortie;
-    }
-
-    public function setEtatsortie(?int $etatsortie): self
-    {
-        $this->etatsortie = $etatsortie;
+        $this->descriptionInfos = $descriptionInfos;
 
         return $this;
     }
@@ -207,74 +146,14 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?int
+    public function getSite(): ?Site
     {
-        return $this->organisateur;
+        return $this->site;
     }
 
-    public function setOrganisateur(int $organisateur): self
+    public function setSite(?Site $site): self
     {
-        $this->organisateur = $organisateur;
-
-        return $this;
-    }
-
-    public function getLieuxNoLieu(): ?int
-    {
-        return $this->lieux_no_lieu;
-    }
-
-    public function setLieuxNoLieu(int $lieux_no_lieu): self
-    {
-        $this->lieux_no_lieu = $lieux_no_lieu;
-
-        return $this;
-    }
-
-    public function getEtatsNoEtat(): ?int
-    {
-        return $this->etats_no_etat;
-    }
-
-    public function setEtatsNoEtat(int $etats_no_etat): self
-    {
-        $this->etats_no_etat = $etats_no_etat;
-
-        return $this;
-    }
-
-    public function getSorties(): ?Site
-    {
-        return $this->sorties;
-    }
-
-    public function setSorties(?Site $sorties): self
-    {
-        $this->sorties = $sorties;
-
-        return $this;
-    }
-
-    public function getEtat(): ?Etat
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(?Etat $etat): self
-    {
-        $this->etat = $etat;
-
-        return $this;
-    }
-
-    public function getLieu(): ?Lieu
-    {
-        return $this->lieu;
-    }
-
-    public function setLieu(?Lieu $lieu): self
-    {
-        $this->lieu = $lieu;
+        $this->site = $site;
 
         return $this;
     }

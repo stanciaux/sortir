@@ -19,29 +19,18 @@ class Site
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $no_site;
-
-    /**
      * @ORM\Column(type="string", length=30)
      */
-    private $nom_site;
+    private $nomSite;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="sorties")
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="site")
      */
     private $sortie;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="site")
-     */
-    private $users;
 
     public function __construct()
     {
         $this->sortie = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,26 +38,14 @@ class Site
         return $this->id;
     }
 
-    public function getNoSite(): ?int
-    {
-        return $this->no_site;
-    }
-
-    public function setNoSite(int $no_site): self
-    {
-        $this->no_site = $no_site;
-
-        return $this;
-    }
-
     public function getNomSite(): ?string
     {
-        return $this->nom_site;
+        return $this->nomSite;
     }
 
-    public function setNomSite(string $nom_site): self
+    public function setNomSite(string $nomSite): self
     {
-        $this->nom_site = $nom_site;
+        $this->nomSite = $nomSite;
 
         return $this;
     }
@@ -85,7 +62,7 @@ class Site
     {
         if (!$this->sortie->contains($sortie)) {
             $this->sortie[] = $sortie;
-            $sortie->setSorties($this);
+            $sortie->setSite($this);
         }
 
         return $this;
@@ -96,39 +73,8 @@ class Site
         if ($this->sortie->contains($sortie)) {
             $this->sortie->removeElement($sortie);
             // set the owning side to null (unless already changed)
-            if ($sortie->getSorties() === $this) {
-                $sortie->setSorties(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setSite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getSite() === $this) {
-                $user->setSite(null);
+            if ($sortie->getSite() === $this) {
+                $sortie->setSite(null);
             }
         }
 

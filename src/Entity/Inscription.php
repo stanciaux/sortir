@@ -19,17 +19,7 @@ class Inscription
     /**
      * @ORM\Column(type="date")
      */
-    private $date_inscription;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $sorties_no_sortie;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $participants_no_participant;
+    private $dateInscription;
 
     public function getId(): ?int
     {
@@ -38,36 +28,12 @@ class Inscription
 
     public function getDateInscription(): ?\DateTimeInterface
     {
-        return $this->date_inscription;
+        return $this->dateInscription;
     }
 
-    public function setDateInscription(\DateTimeInterface $date_inscription): self
+    public function setDateInscription(\DateTimeInterface $dateInscription): self
     {
-        $this->date_inscription = $date_inscription;
-
-        return $this;
-    }
-
-    public function getSortiesNoSortie(): ?int
-    {
-        return $this->sorties_no_sortie;
-    }
-
-    public function setSortiesNoSortie(int $sorties_no_sortie): self
-    {
-        $this->sorties_no_sortie = $sorties_no_sortie;
-
-        return $this;
-    }
-
-    public function getParticipantsNoParticipant(): ?int
-    {
-        return $this->participants_no_participant;
-    }
-
-    public function setParticipantsNoParticipant(int $participants_no_participant): self
-    {
-        $this->participants_no_participant = $participants_no_participant;
+        $this->dateInscription = $dateInscription;
 
         return $this;
     }
