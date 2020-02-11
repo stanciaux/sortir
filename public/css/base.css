@@ -1,0 +1,13 @@
+#logo {
+   vertical-align: middle;
+}
+
+footer{
+   text-align: center;
+   color: darkgrey;
+   clear : both;
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+}
