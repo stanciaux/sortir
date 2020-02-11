@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -36,6 +38,22 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie")
+     */
+    private $sortie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $site;
+
+    public function __construct()
+    {
+        $this->sortie = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,6 +143,44 @@ class User implements UserInterface
     public function setPseudo(string $pseudo): self
     {
         $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortie(): Collection
+    {
+        return $this->sortie;
+    }
+
+    public function addSortie(Sortie $sortie): self
+    {
+        if (!$this->sortie->contains($sortie)) {
+            $this->sortie[] = $sortie;
+        }
+
+        return $this;
+    }
+
+    public function removeSortie(Sortie $sortie): self
+    {
+        if ($this->sortie->contains($sortie)) {
+            $this->sortie->removeElement($sortie);
+        }
+
+        return $this;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): self
+    {
+        $this->site = $site;
 
         return $this;
     }
