@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+<<<<<<< HEAD
     <data-source source="LOCAL" name="sortir@10.27.200.22" uuid="56aa9da0-49ae-44fe-af2d-e801009cfaca">
+=======
+    <data-source source="LOCAL" name="distante" uuid="02d2df3e-0e2a-4bf0-8032-9aac93a340ea">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://10.27.200.22:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="sortir@10.27.200.22" uuid="ac4c8784-3b25-4bf6-a18b-eddf1dba33a4">
+>>>>>>> 99e9014baa6b3e413a77d06dfe44351fe48a6ddd
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
