@@ -76,7 +76,11 @@ class User implements UserInterface
         $this->sorties = new ArrayCollection();
     }
 
+<<<<<<< HEAD
     public function __toString(): string
+=======
+    public function __toString()
+>>>>>>> 6a8f9f7797271f10eff9bd852a8d17913e83de4a
     {
         return $this->nom;
     }
