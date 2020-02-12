@@ -82,6 +82,11 @@ class Sortie
      */
     private $participants;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateSortie;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -249,6 +254,18 @@ class Sortie
             $this->participants->removeElement($participant);
             $participant->removeSorty($this);
         }
+
+        return $this;
+    }
+
+    public function getDateSortie(): ?\DateTimeInterface
+    {
+        return $this->dateSortie;
+    }
+
+    public function setDateSortie(\DateTimeInterface $dateSortie): self
+    {
+        $this->dateSortie = $dateSortie;
 
         return $this;
     }
