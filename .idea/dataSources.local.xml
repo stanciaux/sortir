@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-<<<<<<< HEAD
     <data-source name="sortir@10.27.200.22" uuid="bd53dcfb-6bf8-47ea-9d12-99aa75da24a2">
-=======
-<<<<<<< Updated upstream
-    <data-source name="sortir@10.27.200.22" uuid="12d57958-d3e8-4156-89df-5c86e881182a">
-=======
-    <data-source name="sortir@10.27.200.22" uuid="f9ae8fbe-b2de-446f-b6ad-070e2edd52ee">
->>>>>>> Stashed changes
->>>>>>> 4bf416e672860f251ae1f6143d64168e66b974f9
       <database-info product="MariaDB" version="10.4.10-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="2.4.1" dbms="MARIADB" exact-version="10.4.10" exact-driver-version="2.4">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
