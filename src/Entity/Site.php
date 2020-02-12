@@ -19,7 +19,6 @@ class Site
     private $id;
 
     /**
-<<<<<<< HEAD
      * @ORM\Column(type="string", length=100)
      */
     private $nom;
@@ -29,23 +28,20 @@ class Site
      */
     private $users;
 
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-=======
-     * @ORM\Column(type="string", length=30)
-     */
-    private $nomSite;
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="site")
      */
     private $sortie;
 
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
     public function __construct()
     {
+        $this->users = new ArrayCollection();
         $this->sortie = new ArrayCollection();
->>>>>>> feature/remake_entities
     }
 
     public function getId(): ?int
@@ -53,27 +49,13 @@ class Site
         return $this->id;
     }
 
-<<<<<<< HEAD
     public function getNom(): ?string
     {
         return $this->nom;
-=======
-    public function getNomSite(): ?string
-    {
-        return $this->nomSite;
-    }
-
-    public function setNomSite(string $nomSite): self
-    {
-        $this->nomSite = $nomSite;
-
-        return $this;
->>>>>>> feature/remake_entities
     }
 
     public function setNom(string $nom): self
     {
-<<<<<<< HEAD
         $this->nom = $nom;
 
         return $this;
@@ -92,7 +74,29 @@ class Site
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
             $user->setSite($this);
-=======
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getSite() === $this) {
+                $user->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortie(): Collection
+    {
         return $this->sortie;
     }
 
@@ -101,21 +105,11 @@ class Site
         if (!$this->sortie->contains($sortie)) {
             $this->sortie[] = $sortie;
             $sortie->setSite($this);
->>>>>>> feature/remake_entities
         }
 
         return $this;
     }
 
-<<<<<<< HEAD
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getSite() === $this) {
-                $user->setSite(null);
-=======
     public function removeSortie(Sortie $sortie): self
     {
         if ($this->sortie->contains($sortie)) {
@@ -123,10 +117,10 @@ class Site
             // set the owning side to null (unless already changed)
             if ($sortie->getSite() === $this) {
                 $sortie->setSite(null);
->>>>>>> feature/remake_entities
             }
         }
 
         return $this;
     }
+
 }
