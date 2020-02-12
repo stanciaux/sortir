@@ -11,3 +11,9 @@ footer{
    left: 0;
    right: 0;
 }
+
+.body {
+   margin-top: 1% !important;
+   margin-left: 2% !important;
+   margin-right: 2% !important;
+}

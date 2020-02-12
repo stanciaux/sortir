@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -18,20 +16,6 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-    /**
-     * @ORM\Column(type="string", length=180)
-     */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=180)
-     */
-    private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -50,32 +34,34 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=100)
      */
-    private $telephone;
-/**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie")
-     */
-    private $sortie;
+    private $nom;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users", cascade={"persist"})
      */
     private $site;
 
-    public function __construct()
-    {
-        $this->sortie = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $prenom;
 
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $pseudo;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    
 
     public function getEmail(): ?string
     {
@@ -150,19 +136,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -171,25 +144,9 @@ class User implements UserInterface
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-    }
-    /**
-     * @return Collection|Sortie[]
-     */
-    public function getSortie(): Collection
-    {
-        return $this->sortie;
-    }
-
-    public function addSortie(Sortie $sortie): self
-    {
-        if (!$this->sortie->contains($sortie)) {
-            $this->sortie[] = $sortie;
-        }
-
 
         return $this;
     }
-
 
     public function getPrenom(): ?string
     {
@@ -199,18 +156,9 @@ class User implements UserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-    }
-
-    public function removeSortie(Sortie $sortie): self
-    {
-        if ($this->sortie->contains($sortie)) {
-            $this->sortie->removeElement($sortie);
-        }
-
 
         return $this;
     }
-
 
     public function getTelephone(): ?string
     {
@@ -220,7 +168,10 @@ class User implements UserInterface
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
     }
+
     public function getSite(): ?Site
     {
         return $this->site;
@@ -229,7 +180,18 @@ class User implements UserInterface
     public function setSite(?Site $site): self
     {
         $this->site = $site;
-    
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
 
         return $this;
     }
