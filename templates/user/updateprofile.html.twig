@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% form_theme userUpdateForm 'bootstrap_4_horizontal_layout.html.twig' %}
+
+
+{% block title %}Modifier profil{% endblock %}
+
+{% block body %}
+    <br>
+<div class="row">
+    <div class="col-8 offset-2">
+    {{ form_start(userUpdateForm) }}
+    {{ form_widget(userUpdateForm) }}<button type="submit">Enregistrer</button>
+    {{ form_end(userUpdateForm) }}
+        <a class="btn btn-primary" href="{{ path('home') }}">Annuler</a>
+    </div>
+</div>
+
+
+{% endblock %}

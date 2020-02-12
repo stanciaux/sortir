@@ -19,7 +19,6 @@ class Site
     private $id;
 
     /**
-
      * @ORM\Column(type="string", length=100)
      */
     private $nom;
@@ -29,12 +28,15 @@ class Site
      */
     private $users;
 
-   
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="site")
      */
     private $sortie;
+
+    public function __toString()
+    {
+        return $this->nom;
+    }
 
     public function __construct()
     {
@@ -125,4 +127,5 @@ class Site
 
         return $this;
     }
+
 }

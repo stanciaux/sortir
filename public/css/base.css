@@ -17,3 +17,7 @@ footer{
    margin-left: 2% !important;
    margin-right: 2% !important;
 }
+
+#username {
+   text-align: center;
+}

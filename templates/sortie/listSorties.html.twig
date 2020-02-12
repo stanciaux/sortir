@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+
+    <ul>
+
+        {% for sortie in sorties %}
+            <li>{{ sortie.nom }}
+                {{ sortie.dateSortie | date("d-m-Y")}}
+                {{ sortie.dateCloture | date("d-m-Y") }}
+                {{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}
+                {{ sortie.etat }}
+                {% for participant in sortie.participants %}
+                    {% if participant.id == app.user.id %}
+                        x
+                    {% endif %}
+{#                    {{ participant.id }}#}
+                {%  endfor %}
+            </li>
+        {%  endfor %}
+    </ul>
+
+{#    {% for label, messages in app.flashes %}#}
+{#        {% for message in messages %}#}
+{#            <div class="alert-{{ label }}">{{ message }}</div>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+
+{% endblock %}

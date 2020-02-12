@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir profil{% endblock %}
+
+{% block body %}
+
+    <h3 id="username">{{ user.pseudo }}</h3>
+    <br>
+    <dl class="row">
+        <dt class="col-sm-3">Nom : </dt>
+        <dd class="col-sm-9">{{ user.nom }}</dd>
+
+        <dt class="col-sm-3">Prénom : </dt>
+        <dd class="col-sm-9">{{ user.prenom }}</dd>
+
+        <dt class="col-sm-3">Téléphone : </dt>
+        <dd class="col-sm-9">{{ user.telephone }}</dd>
+
+        <dt class="col-sm-3">Email : </dt>
+        <dd class="col-sm-9">{{ user.email }}</dd>
+
+        <dt class="col-sm-3">Site de rattachement</dt>
+        <dd class="col-sm-9">{{ user.site }}</dd>
+    </dl>
+
+{% endblock %}
