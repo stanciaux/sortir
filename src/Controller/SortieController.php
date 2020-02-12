@@ -8,15 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/sortie", name="sortie")
+ */
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/sortie", name="sortie")
+     * @Route("/detail/{id}", name="detail")
      */
-    public function index()
+    public function detail($id, EntityManagerInterface $em)
     {
-        return $this->render('sortie/index.html.twig', [
-            'controller_name' => 'SortieController',
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        return $this->render('sortie/detailSortie.html.twig', [
+            "sortie" => $sortie,
         ]);
     }
 //    /**

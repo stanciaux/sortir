@@ -24,11 +24,6 @@ class Sortie
     private $nom;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $dateDebut;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $duree;
@@ -83,7 +78,7 @@ class Sortie
     private $participants;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateSortie;
 
