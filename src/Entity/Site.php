@@ -19,6 +19,7 @@ class Site
     private $id;
 
     /**
+<<<<<<< HEAD
      * @ORM\Column(type="string", length=100)
      */
     private $nom;
@@ -31,6 +32,20 @@ class Site
     public function __construct()
     {
         $this->users = new ArrayCollection();
+=======
+     * @ORM\Column(type="string", length=30)
+     */
+    private $nomSite;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="site")
+     */
+    private $sortie;
+
+    public function __construct()
+    {
+        $this->sortie = new ArrayCollection();
+>>>>>>> feature/remake_entities
     }
 
     public function getId(): ?int
@@ -38,13 +53,27 @@ class Site
         return $this->id;
     }
 
+<<<<<<< HEAD
     public function getNom(): ?string
     {
         return $this->nom;
+=======
+    public function getNomSite(): ?string
+    {
+        return $this->nomSite;
+    }
+
+    public function setNomSite(string $nomSite): self
+    {
+        $this->nomSite = $nomSite;
+
+        return $this;
+>>>>>>> feature/remake_entities
     }
 
     public function setNom(string $nom): self
     {
+<<<<<<< HEAD
         $this->nom = $nom;
 
         return $this;
@@ -63,11 +92,22 @@ class Site
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
             $user->setSite($this);
+=======
+        return $this->sortie;
+    }
+
+    public function addSortie(Sortie $sortie): self
+    {
+        if (!$this->sortie->contains($sortie)) {
+            $this->sortie[] = $sortie;
+            $sortie->setSite($this);
+>>>>>>> feature/remake_entities
         }
 
         return $this;
     }
 
+<<<<<<< HEAD
     public function removeUser(User $user): self
     {
         if ($this->users->contains($user)) {
@@ -75,6 +115,15 @@ class Site
             // set the owning side to null (unless already changed)
             if ($user->getSite() === $this) {
                 $user->setSite(null);
+=======
+    public function removeSortie(Sortie $sortie): self
+    {
+        if ($this->sortie->contains($sortie)) {
+            $this->sortie->removeElement($sortie);
+            // set the owning side to null (unless already changed)
+            if ($sortie->getSite() === $this) {
+                $sortie->setSite(null);
+>>>>>>> feature/remake_entities
             }
         }
 
