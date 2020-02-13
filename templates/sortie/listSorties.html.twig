@@ -4,11 +4,61 @@
 
 {% block body %}
 
-     {% for label, messages in app.flashes %}
-         {% for message in messages %}
-             <div class="alert-{{ label }}">{{ message }}</div>
-         {% endfor %}
-     {% endfor %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    <form action="" method="post" class="form-example container-fluid">
+        <p>Filtrer les sorties</p>
+        <div class="col-sm-12 form-group row">
+            <div class="inline-block col-5">
+                <div class="row filtre">
+                    <label class="col-sm-2 col-form-label col-form-label-sm col-" for="site">Site :</label>
+                    <select class="form-control  form-control-sm col-10" name="site" id="site">
+                        {% for site in sites %}
+                            <option> {{ site.nom }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row filtre">
+                    <label class="col-form-label col-form-label-sm col-6" for="search">Le nom de la sortie contient
+                        : </label>
+                    <input class="form-control form-control-sm col-6" type="search" name="search" id="search" placeholder="search">
+                </div>
+                <div class="row col-12 filtre">
+
+                        <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateDebut">entre</label>
+                        <input class="form-control form-control-sm col-3" type="date" name="dateDebut" id="dateDebut">
+
+                        <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateFin">et</label>
+                        <input class="form-control form-control-sm col-3" type="date" name="dateFin" id="dateFin">
+
+                </div>
+            </div>
+
+            <div class="inline-block col-4 check">
+                <div class="row filtre">
+                    <input type="checkbox" name="organisateur" value="organisateur"> Sorties dont je suis
+                    l'organisateur/trice<br>
+                </div>
+                <div class="row filtre">
+                    <input type="checkbox" name="inscrit" value="inscrit"> Sorties auxquelles je suis inscrit/e<br>
+                </div>
+                <div class="row filtre">
+                    <input type="checkbox" name="nonInscrit" value="nonInscrit"> Sorties auxquelles je ne suis pas
+                    inscrit/e<br>
+                </div>
+                <div class="row filtre">
+                    <input type="checkbox" name="sortiesPassees" value="sortiesPassees"> Sorties passées<br>
+                </div>
+            </div>
+            <div class="inline-block col-sm-2 col-2">
+                <input class="bouton btn btn-outline-dark" type="submit" value="Rechercher">
+            </div>
+        </div>
+    </form>
 
     <table class="table table-striped">
         <thead>
@@ -25,29 +75,29 @@
         </thead>
         <tbody>
         {% for sortie in sorties %}
-        <tr>
-            <td>{{ sortie.nom }}</td>
-            <td>{{ sortie.dateSortie | format_datetime(locale='fr')}}</td>
-            <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
-            <td>{{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}</td>
-            <td>{{ sortie.etat }}</td>
-            <td>{% for participant in sortie.participants %}
-                    {% if participant.id == app.user.id %}
-                        x
-                    {% endif %}
-                {%  endfor %}
-            </td>
-            <td>{{ sortie.organisateur }}</td>
-            <td>
-                <a href="{{ path('sortiedetail', {'id':sortie.id})}}">Afficher</a>
-                {% for participant in sortie.participants %}
-                    {% if participant.id == app.user.id %}
-                        <a href="">Se désinscrire</a>
-                    {% endif %}
-                {%  endfor %}
-            </td>
-        </tr>
-        {%  endfor %}
+            <tr>
+                <td>{{ sortie.nom }}</td>
+                <td>{{ sortie.dateSortie | format_datetime(locale='fr') }}</td>
+                <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
+                <td>{{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat }}</td>
+                <td>{% for participant in sortie.participants %}
+                        {% if participant.id == app.user.id %}
+                            x
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ sortie.organisateur }}</td>
+                <td>
+                    <a href="{{ path('sortiedetail', {'id':sortie.id}) }}">Afficher</a>
+                    {% for participant in sortie.participants %}
+                        {% if participant.id == app.user.id %}
+                            <a href="">Se désinscrire</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 

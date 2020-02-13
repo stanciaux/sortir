@@ -21,3 +21,20 @@ footer{
 #username {
    text-align: center;
 }
+.filtre {
+   margin-top: 1em;
+}
+
+.check {
+   margin-left: 1em !important;
+}
+
+.padd {
+   padding-right: 2px;
+}
+
+.bouton {
+   width: 10em;
+   height: 6em;
+   margin-top: 2em;
+}

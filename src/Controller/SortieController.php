@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Site;
 use App\Entity\Sortie;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,11 +56,13 @@ class SortieController extends AbstractController
     public function partyList(EntityManagerInterface $em)
     {
         $sorties = $em->getRepository(Sortie::class)->findAll();
+        $sites = $em->getRepository(Site::class)->findAll();
 
         return $this->render(
             "sortie/listSorties.html.twig",
             [
-                "sorties" => $sorties
+                "sorties" => $sorties,
+                "sites" => $sites
             ]
         );
     }

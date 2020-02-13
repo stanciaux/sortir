@@ -29,7 +29,7 @@ class Sortie
     private $duree;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateCloture;
 
