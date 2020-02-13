@@ -24,11 +24,6 @@ class Sortie
     private $nom;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $dateDebut;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $duree;
@@ -66,7 +61,7 @@ class Sortie
     private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", cascade={"persist", "remove"},inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;
@@ -86,6 +81,7 @@ class Sortie
      * @ORM\Column(type="date")
      */
     private $dateSortie;
+
 
     public function __construct()
     {
@@ -110,17 +106,6 @@ class Sortie
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
-    {
-        return $this->dateDebut;
-    }
-
-    public function setDateDebut(\DateTimeInterface $dateDebut): self
-    {
-        $this->dateDebut = $dateDebut;
-
-        return $this;
-    }
 
     public function getDuree(): ?int
     {

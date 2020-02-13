@@ -14,7 +14,7 @@ class OrganizerType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateDebut')
+//            ->add('dateDebut')
             ->add('duree')
             ->add('dateCloture')
             ->add('nbInscriptionsMax')
@@ -27,6 +27,8 @@ class OrganizerType extends AbstractType
             ->add('organisateur')
             ->add('participants')
             ->add('Valider', SubmitType::class)
+
+            ->add('lieu', LieuType::class)
         ;
     }
 
@@ -35,7 +37,5 @@ class OrganizerType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Sortie::class,
         ]);
-
-
     }
 }
