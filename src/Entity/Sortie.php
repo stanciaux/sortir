@@ -29,7 +29,7 @@ class Sortie
     private $duree;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateCloture;
 
@@ -101,18 +101,6 @@ class Sortie
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getDateDebut(): ?\DateTimeInterface
-    {
-        return $this->dateDebut;
-    }
-
-    public function setDateDebut(\DateTimeInterface $dateDebut): self
-    {
-        $this->dateDebut = $dateDebut;
 
         return $this;
     }

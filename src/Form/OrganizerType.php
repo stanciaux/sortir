@@ -17,7 +17,6 @@ class OrganizerType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateDebut')
             ->add('dateCloture')
             ->add('nbInscriptionsMax')
             ->add('descriptionInfos')

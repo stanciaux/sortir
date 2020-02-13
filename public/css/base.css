@@ -1,3 +1,18 @@
+html {
+   height: 100%;
+}
+
+body {
+   min-height: 100%;
+   margin: 0;
+   padding: 0;
+   background-image: url("../img/background.png");
+   background-position: bottom;
+   background-repeat: no-repeat;
+   background-size: 100% 220px;
+   background-attachment: fixed;
+}
+
 #logo {
    vertical-align: middle;
 }
@@ -21,3 +36,20 @@ footer{
 #username {
    text-align: center;
 }
+
+#tableparticipants {
+   width: 100%;
+}
+
+table tr {
+   height: 5px;
+}
+
+#scroll {
+   overflow-y:scroll;
+}
+
+/*thead, tbody {*/
+/*   display: block;*/
+/*}*/
+

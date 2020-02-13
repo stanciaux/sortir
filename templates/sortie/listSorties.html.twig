@@ -4,11 +4,11 @@
 
 {% block body %}
 
-     {% for label, messages in app.flashes %}
-         {% for message in messages %}
-             <div class="alert-{{ label }}">{{ message }}</div>
-         {% endfor %}
-     {% endfor %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
 
     <table class="table table-striped">
         <thead>
@@ -25,31 +25,37 @@
         </thead>
         <tbody>
         {% for sortie in sorties %}
-        <tr>
-            <td>{{ sortie.nom }}</td>
-            <td>{{ sortie.dateSortie | format_datetime(locale='fr')}}</td>
-            <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
-            <td>{{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}</td>
-            <td>{{ sortie.etat }}</td>
-            <td>{% for participant in sortie.participants %}
-                    {% if participant.id == app.user.id %}
-                        x
-                    {% endif %}
-                {%  endfor %}
-            </td>
-            <td>{{ sortie.organisateur }}</td>
-            <td>
-                <a href="{{ path('sortiedetail', {'id':sortie.id})}}">Afficher</a>
-                {% for participant in sortie.participants %}
-                    {% if participant.id == app.user.id %}
+            <tr>
+                <td><a href="{{ path('sortiedetail', {'id':sortie.id}) }}">{{ sortie.nom }}</a></td>
+                <td>{{ sortie.dateSortie | format_datetime(locale='fr') }}</td>
+                <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
+                <td>{{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat }}</td>
+                <td>{% for participant in sortie.participants %}
+                        {% if participant.id == app.user.id %}
+                            x
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('userprofile', {'id':sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
+                </td>
+                <td>
+                    {% set participation = false %}
+                    {% for participant in sortie.participants %}
+                        {% if participant.id == app.user.id %}
+                            {% set participation = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if participation %}
                         <a href="">Se désinscrire</a>
+                    {% else %}
+                        <a href="">S'inscrire</a>
                     {% endif %}
-                {%  endfor %}
-            </td>
-        </tr>
-        {%  endfor %}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
-
 
 {% endblock %}

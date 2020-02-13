@@ -4,4 +4,64 @@
 
 {% block body %}
 
+    <h3 id="username">Détail de la sortie</h3>
+    <br>
+    <dl class="row">
+        <dt class="col-sm-3">Nom : </dt>
+        <dd class="col-sm-9">{{ sortie.nom }}</dd>
+
+        <dt class="col-sm-3">Date et heure : </dt>
+        <dd class="col-sm-9">{{ sortie.dateSortie | format_datetime(locale='fr') }}</dd>
+
+        <dt class="col-sm-3">Date limite d'inscription : </dt>
+        <dd class="col-sm-9">{{ sortie.dateCloture | format_datetime(locale='fr') }}</dd>
+
+        <dt class="col-sm-3">Nombre de places : </dt>
+        <dd class="col-sm-9">{{ sortie.nbInscriptionsMax }}</dd>
+
+        <dt class="col-sm-3">Durée :</dt>
+        <dd class="col-sm-9">{{ sortie.duree }}</dd>
+
+        <dt class="col-sm-3">Description et informations :</dt>
+        <dd class="col-sm-9">{{ sortie.descriptionInfos }}</dd>
+
+        <dt class="col-sm-3">Lieu :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu }}</dd>
+
+        <dt class="col-sm-3">Rue :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu.rue }}</dd>
+
+        <dt class="col-sm-3">Ville :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu.ville.nomVille }}</dd>
+
+        <dt class="col-sm-3">Code postal :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu.ville.codePostal }}</dd>
+
+        <dt class="col-sm-3">Latitude :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu.latitude }}</dd>
+
+        <dt class="col-sm-3">Longitude :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu.longitude }}</dd>
+    </dl>
+
+    <h5>Participants :</h5>
+
+    <table class="table table-striped" id="tableparticipants">
+        <thead>
+        <tr>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Nom</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participant in sortie.participants %}
+            <tr>
+                <td><a href="{{ path('userprofile',{'id':participant.id}) }}">{{ participant.pseudo }}</a></td>
+                <td>{{ participant.prenom }} {{ participant.nom }}</td>
+            </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+
+
 {% endblock %}

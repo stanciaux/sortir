@@ -3,12 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Sortir.com{% endblock %}</title>
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset("css/base.css") }}">
-            <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/base.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
 
+        {% block stylesheets %}
         {% endblock %}
     </head>
+
     <body class="body">
         <header>
             <h1><img id="logo" src="{{ asset('img/logo.png') }}" alt=""> Sortir.com</h1>
@@ -30,14 +31,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('userupdate', {'id':app.user.id}) }}">Mon Profil</a>
                         </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('organizer') }}">Organiser une sortie</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                         </li>
                         {% endif %}
                         {% if app.user is null %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
-                            <a class="nav-link" href="{{ path('organizer') }}">Organiser une sortie</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -51,9 +54,9 @@
             
         {% endblock %}
 
-        <footer>
-            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-        </footer>
+{#        <footer>#}
+{#            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>#}
+{#        </footer>#}
 
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
