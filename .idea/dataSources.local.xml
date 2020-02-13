@@ -2,6 +2,7 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="sortir@10.27.200.22" uuid="f9ae8fbe-b2de-446f-b6ad-070e2edd52ee">
+
       <database-info product="MariaDB" version="10.4.10-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="2.4.1" dbms="MARIADB" exact-version="10.4.10" exact-driver-version="2.4">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
@@ -14,7 +15,6 @@
           <node kind="schema" qname="@" />
         </introspection-scope>
       </schema-mapping>
-
     </data-source>
   </component>
 </project>
