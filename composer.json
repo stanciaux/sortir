@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.8",
+        "pugx/autocompleter-bundle": "^1.5",
         "symfony/asset": "5.0.*",
         "symfony/cache": "5.0.*",
         "symfony/console": "5.0.*",

@@ -2,26 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Ville;
+use App\Entity\Site;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VilleType extends AbstractType
+class SiteType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nomVille')
-            ->add('codePostal')
+            ->add('nom')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Ville::class,
+            'data_class' => Site::class,
         ]);
     }
 }

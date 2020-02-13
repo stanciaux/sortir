@@ -44,7 +44,7 @@ class Lieu
     private $sorties;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="lieux")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville", cascade={"persist", "remove"}, inversedBy="lieux")
      * @ORM\JoinColumn(nullable=false)
      */
     private $ville;

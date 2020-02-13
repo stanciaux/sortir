@@ -61,7 +61,7 @@ class Sortie
     private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", cascade={"persist", "remove"},inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;
@@ -81,6 +81,7 @@ class Sortie
      * @ORM\Column(type="datetime")
      */
     private $dateSortie;
+
 
     public function __construct()
     {
@@ -104,6 +105,7 @@ class Sortie
 
         return $this;
     }
+
 
     public function getDuree(): ?int
     {

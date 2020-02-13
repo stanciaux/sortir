@@ -33,6 +33,7 @@ class OrganizerController extends AbstractController
                 // On définit un message flash
                 $this->get('session')->getFlashBag()->add('info', 'Nouvelle sortie bien ajoutée');
                 // On redirige vers la page de visualisation de la sortie nouvellement créée
+                //TODO changer la route 'organizer' par la page affichant la récap de la saisie
                 return $this->redirect($this->generateUrl('organizer', array('id' => $sortie->getId())));
             }
         }
