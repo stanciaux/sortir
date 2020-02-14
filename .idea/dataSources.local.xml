@@ -17,5 +17,9 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="sortir@10.27.200.22 [2]" uuid="aa19b7a4-f8ad-4098-bd89-81d6a9b70f64">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" exact-version="0" />
+      <schema-mapping />
+    </data-source>
   </component>
 </project>
