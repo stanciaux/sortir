@@ -46,6 +46,7 @@ class Lieu
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville", cascade={"persist", "remove"}, inversedBy="lieux")
      * @ORM\JoinColumn(nullable=false, name="Ville", referencedColumnName="id")
+     *
      */
     private $ville;
 

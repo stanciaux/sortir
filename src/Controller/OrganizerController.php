@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -78,15 +79,17 @@ class OrganizerController extends AbstractController
             $sortie = $form->getData();
 
             $dateSortie = $form['dateSortie']->getData();
-            $sortie->setDatedebut(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
+            $sortie->setDateSortie(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
 
             $dateCloture = $form['dateCloture']->getData();
-            $sortie->setDatecloture(\DateTime::createFromFormat('Y/m/d', $dateCloture));
+            $sortie->setDateCloture(\DateTime::createFromFormat('Y/m/d', $dateCloture));
 
-            if ($form->get('save')->isClicked()) {
-                $sortie->setEtatSortie("créée");
+            $etatCree = $em->getRepository(Etat::class)->find(1);
+            $etatOuver = $em->getRepository(Etat::class)->find(1);
+            if ($form->get('Enregistrer')->isClicked()) {
+                $sortie->setEtat($etatCree);
             } elseif ($form->get('publish')->isClicked()) {
-                $sortie->setEtatSortie("ouvert");
+                $sortie->setEtat($etatOuver);
             } else {
                 //TODO changer la route 'organizer' par la page affichant la récap de la saisie
                 return $this->redirectToRoute('organizer');
