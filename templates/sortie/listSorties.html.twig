@@ -30,10 +30,10 @@
                 <div class="row col-12 filtre">
 
                         <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateDebut">entre</label>
-                        <input class="form-control form-control-sm col-3" type="date" name="dateDebut" id="dateDebut">
+                        <input class="form-control form-control-sm col-4" type="date" name="dateDebut" id="dateDebut">
 
                         <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateFin">et</label>
-                        <input class="form-control form-control-sm col-3" type="date" name="dateFin" id="dateFin">
+                        <input class="form-control form-control-sm col-4" type="date" name="dateFin" id="dateFin">
 
                 </div>
             </div>
@@ -79,10 +79,10 @@
                 <td><a href="{{ path('sortiedetail', {'id':sortie.id}) }}">{{ sortie.nom }}</a></td>
                 <td>{{ sortie.dateSortie | format_datetime(locale='fr') }}</td>
                 <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
-                <td>{{ sortie.participants | length }}/{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.inscriptions | length }}/{{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.etat }}</td>
-                <td>{% for participant in sortie.participants %}
-                        {% if participant.id == app.user.id %}
+                <td>{% for inscription in sortie.inscriptions %}
+                        {% if inscription.participant.id == app.user.id %}
                             x
                         {% endif %}
                     {% endfor %}
@@ -92,8 +92,8 @@
                 </td>
                 <td>
                     {% set participation = false %}
-                    {% for participant in sortie.participants %}
-                        {% if participant.id == app.user.id %}
+                    {% for inscription in sortie.inscriptions %}
+                        {% if inscription.participant.id == app.user.id %}
                             {% set participation = true %}
                         {% endif %}
                     {% endfor %}

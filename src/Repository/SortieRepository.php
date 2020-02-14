@@ -19,6 +19,42 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function afficher($param){
+
+//        $qb = $this->createQueryBuilder('s');
+//        $qb->andWhere('s.site = :site')
+//        ->setParameter('site',$param['site']);
+//        $query = $qb->getQuery();
+//        $result = $query->getResult();
+//
+//        return $result;
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere("s.nom = :search")
+            ->setParameter("search", 'sortie');
+        dump($qb);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        dump($result);
+
+        return $result;
+
+
+
+//            $sorties = $em->getRepository(Sortie::class);
+            $dql = "SELECT s
+                    FROM App\Entity\Sortie s
+//                  WHERE site_id LIKE ";
+
+//            $siteRecherche = $em->getRepository(Site::class)->findOneBy(['nom' => $site])->getId();
+//            dump($siteRecherche);
+//            $sorties = $em->getRepository(Sortie::class)->findBy(['site_id' => $siteRecherche]);
+//            $idSite = $siteRecherche->getId();
+
+    }
+
+
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

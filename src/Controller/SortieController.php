@@ -53,10 +53,52 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortieslist", name="sortieslist")
      */
-    public function partyList(EntityManagerInterface $em)
+    public function partyList(EntityManagerInterface $em, Request $request)
     {
         $sorties = $em->getRepository(Sortie::class)->findAll();
+        dump($sorties);
         $sites = $em->getRepository(Site::class)->findAll();
+
+        // Récupération des critères de recherche
+
+        $parametres = [
+            'site' => $request->get('site'),
+            'search' => $request->get('search'),
+            'dateDebut' => $request->get('dateDebut'),
+            'dateFin' => $request->get('dateFin'),
+            'organisateur' => $request->get('organisateur'),
+            'inscrit' => $request->get('inscrit'),
+            'nonInscrit' => $request->get('nonInscrit'),
+            'sortiesPassees' => $request->get('sortiesPassees'),
+        ];
+        dump($parametres);
+
+        if ($parametres){
+            $sortiess = $em->getRepository(Sortie::class)->afficher($parametres);
+            dump($sorties);
+
+            return $this->render('sortie/listSorties.html.twig',
+                [
+                   "sorties" => $sorties,
+                   "sites" => $sites
+                ]);
+        }
+
+//        $sites = $em->getRepository(Site::class)->afficher(tableau);
+//
+//        if($site)
+//        {
+//
+//            $sorties = $em->getRepository(Sortie::class)->findAll();
+//
+//
+////
+//        }
+//
+//        if ($search)
+//        {
+//            $sorties = $em->getRepository(Sortie::class)->search($search);
+//        }
 
         return $this->render(
             "sortie/listSorties.html.twig",
