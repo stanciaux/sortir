@@ -18,6 +18,25 @@ use Symfony\Component\Validator\Constraints\Date;
 class SortieController extends AbstractController
 {
     /**
+     * @Route("/sortieslist", name="sortieslist")
+     */
+    public function partyList(EntityManagerInterface $em)
+    {
+        $sorties = $em->getRepository(Sortie::class)->findAll();
+        $sites = $em->getRepository(Site::class)->findAll();
+        $dateDuJour = new \DateTime();
+
+        return $this->render(
+            "sortie/listSorties.html.twig",
+            [
+                "sorties" => $sorties,
+                "sites" => $sites,
+                "dateJour" => $dateDuJour
+            ]
+        );
+    }
+
+    /**
      * @Route("/detail/{id}", name="detail")
      */
     public function detail($id, EntityManagerInterface $em)
@@ -37,6 +56,7 @@ class SortieController extends AbstractController
     {
         $sorties = $em->getRepository(Sortie::class)->findAll();
         $sites = $em->getRepository(Site::class)->findAll();
+        $dateDuJour = new \DateTime();
 
         $inscription = new Inscription();
 
@@ -44,9 +64,13 @@ class SortieController extends AbstractController
         $user = $this->getUser();
         $userId = $user->getId();
 
+//        Si la sortie est ouverte, que le nb max d'inscriptions n'est pas atteint,
+//          que je ne suis pas déjà inscrit,
+//          et que la date de cloture des inscriptions n'est pas dépassée :
         if ($sortie->getEtat()->getId() == 2
             and $sortie->getInscriptions()->count() < $sortie->getNbInscriptionsMax()
             and !$sortie->getInscriptions()->contains($userId)
+            and $sortie->getDateCloture() > $dateDuJour
         ){
             $inscription->setSortie($sortie)
                         ->setParticipant($user)
@@ -58,46 +82,55 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortiesortieslist',
                 [
                     "sorties" => $sorties,
-                    "sites" => $sites
+                    "sites" => $sites,
+                    "dateJour" => $dateDuJour
                 ]
                 );
         }
 
 //        if ($sortie->getEtat()->getId() == 2
-//            and $sortie->getParticipants()->count() == $sortie->getNbInscriptionsMax()
+//            and $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
 //        ){
-//            $this->addFlash('warning', "Le nombre maximal de participants est atteint");
+//            $this->addFlash('error', "Le nombre maximal de participants est atteint");
 //            return $this->redirectToRoute('sortiesortieslist');
 //        }
 //
 //        if ($sortie->getEtat()->getId() == 2
-//            and $sortie->getParticipants()->contains($userId)
+//            and $sortie->getInscriptions()->contains($user)
 //        ){
-//            $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
+//            $this->addFlash('error', "Vous êtes déjà inscrit à cette sortie");
 //            return $this->redirectToRoute('sortiesortieslist');
 //        }
 
         return $this->render('sortie/listSorties.html.twig',
             [
                "sorties" => $sorties,
-               "sites" => $sites
+               "sites" => $sites,
+               "dateJour" => $dateDuJour
             ]);
     }
 
     /**
-     * @Route("/sortieslist", name="sortieslist")
+     * @Route("/unsubscribe/{id}", name="unsubscribe")
      */
-    public function partyList(EntityManagerInterface $em)
+    public function unsubscribe($id, EntityManagerInterface $em)
     {
         $sorties = $em->getRepository(Sortie::class)->findAll();
         $sites = $em->getRepository(Site::class)->findAll();
+        $dateDuJour = new \DateTime();
 
-        return $this->render(
-            "sortie/listSorties.html.twig",
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+        $user = $this->getUser();
+        $userId = $user->getId();
+        
+        if ()
+
+        return $this->render('sortie/listSorties.html.twig',
             [
                 "sorties" => $sorties,
-                "sites" => $sites
-            ]
-        );
+                "sites" => $sites,
+                "dateJour" => $dateDuJour
+            ]);
     }
+
 }

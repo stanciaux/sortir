@@ -105,7 +105,9 @@
                     {% endif %}
 
 {#                    SORTIE OUVERTE + PAS FULL #}
-                    {% if sortie.etat.id == 2 and sortie.inscriptions.count < sortie.nbInscriptionsMax %}
+                    {% if sortie.etat.id == 2
+                        and sortie.inscriptions.count < sortie.nbInscriptionsMax
+                        and sortie.dateCloture > dateJour %}
                         {% set participation = false %}
                         {% for inscription in sortie.inscriptions %}
                             {% if inscription.participant.id == app.user.id %}
