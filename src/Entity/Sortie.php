@@ -240,7 +240,6 @@ class Sortie
             $this->inscriptions[] = $inscription;
             $inscription->setSortie($this);
         }
-
         return $this;
     }
 

@@ -54,10 +54,10 @@
         </tr>
         </thead>
         <tbody>
-        {% for participant in sortie.participants %}
+        {% for inscription in sortie.inscriptions %}
             <tr>
-                <td><a href="{{ path('userprofile',{'id':participant.id}) }}">{{ participant.pseudo }}</a></td>
-                <td>{{ participant.prenom }} {{ participant.nom }}</td>
+                <td><a href="{{ path('userprofile',{'id':inscription.participant.id}) }}">{{ inscription.participant.pseudo }}</a></td>
+                <td>{{ inscription.participant.prenom }} {{ inscription.participant.nom }}</td>
             </tr>
         {%  endfor %}
         </tbody>

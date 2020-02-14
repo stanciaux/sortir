@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
+use App\Entity\Site;
 use App\Entity\Sortie;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\OrganizerType;
@@ -40,7 +44,44 @@ class OrganizerController extends AbstractController
         return $this->render('organizer/index.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
 
+    /**
+     * @Route("/cancelorg/{id}", name="cancelorg")
+     */
+    public function cancel($id, EntityManagerInterface $em)
+    {
+       $sorties = $em->getRepository(Sortie::class)->findAll();
+       $sites = $em->getRepository(Site::class)->findAll();
+
+       $sortie = $em->getRepository(Sortie::class)->find($id);
+       $organisateur = $sortie->getOrganisateur();
+       $orgId = $organisateur->getId();
+       $user = $this->getUser();
+       $userId = $user->getId();
+       $etatAnnule = $em->getRepository(Etat::class)->find(6);
+       $dateJour = new \DateTime();
+
+       if ($sortie->getEtat()->getId() == 2
+           and $orgId == $userId
+           and $dateJour <= $sortie->getDateSortie() )
+       {
+           $sortie->setEtat($etatAnnule);
+           $em->flush();
+
+           $this->addFlash('success', "Sortie annulée");
+           return $this->redirectToRoute('sortiesortieslist',
+               [
+                   "sorties" => $sorties,
+                   "sites" => $sites
+               ]);
+       }
+
+        return $this->render('sortie/listSorties.html.twig',
+           [
+               "sorties" => $sorties,
+               "sites" => $sites
+           ]);
     }
 
 //    /**
