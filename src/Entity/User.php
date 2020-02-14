@@ -40,20 +40,10 @@ class User implements UserInterface
      */
     private $nom;
 
-     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users", cascade={"persist"})
-     */
-    private $site;
-
     /**
      * @ORM\Column(type="string", length=100)
      */
     private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $telephone;
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
@@ -61,19 +51,30 @@ class User implements UserInterface
     private $pseudo;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users", cascade={"persist"})
+     */
+    private $site;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $telephone;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="organisateur")
      */
     private $sortiesOrganisees;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie", inversedBy="participants")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscription", mappedBy="participant")
      */
-    private $sorties;
+    private $inscriptions;
 
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
         $this->sorties = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -184,6 +185,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
     public function getTelephone(): ?string
     {
         return $this->telephone;
@@ -204,18 +217,6 @@ class User implements UserInterface
     public function setSite(?Site $site): self
     {
         $this->site = $site;
-
-        return $this;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
 
         return $this;
     }
@@ -252,28 +253,36 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Sortie[]
+     * @return Collection|Inscription[]
      */
-    public function getSorties(): Collection
+    public function getInscriptions(): Collection
     {
-        return $this->sorties;
+        return $this->inscriptions;
     }
 
-    public function addSorty(Sortie $sorty): self
+    public function addInscription(Inscription $inscription): self
     {
-        if (!$this->sorties->contains($sorty)) {
-            $this->sorties[] = $sorty;
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions[] = $inscription;
+            $inscription->setParticipant($this);
         }
 
         return $this;
     }
 
-    public function removeSorty(Sortie $sorty): self
+    public function removeInscription(Inscription $inscription): self
     {
-        if ($this->sorties->contains($sorty)) {
-            $this->sorties->removeElement($sorty);
+        if ($this->inscriptions->contains($inscription)) {
+            $this->inscriptions->removeElement($inscription);
+            // set the owning side to null (unless already changed)
+            if ($inscription->getParticipant() === $this) {
+                $inscription->setParticipant(null);
+            }
         }
 
         return $this;
     }
+
+  
+
 }
