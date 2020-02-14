@@ -73,21 +73,21 @@ class Sortie
     private $organisateur;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="sorties")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscription", mappedBy="sortie")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $participants;
+    private $inscriptions;
 
     /**
      * @ORM\Column(type="datetime")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $dateSortie;
 
-
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -105,7 +105,6 @@ class Sortie
 
         return $this;
     }
-
 
     public function getDuree(): ?int
     {
@@ -167,6 +166,18 @@ class Sortie
         return $this;
     }
 
+    public function getDateSortie(): ?\DateTimeInterface
+    {
+        return $this->dateSortie;
+    }
+
+    public function setDateSortie(\DateTimeInterface $dateSortie): self
+    {
+        $this->dateSortie = $dateSortie;
+
+        return $this;
+    }
+
     public function getSite(): ?Site
     {
         return $this->site;
@@ -216,41 +227,32 @@ class Sortie
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|Inscription[]
      */
-    public function getParticipants(): Collection
+    public function getInscriptions(): Collection
     {
-        return $this->participants;
+        return $this->inscriptions;
     }
 
-    public function addParticipant(User $participant): self
+    public function addInscription(Inscription $inscription): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->addSorty($this);
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions[] = $inscription;
+            $inscription->setSortie($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(User $participant): self
+    public function removeInscription(Inscription $inscription): self
     {
-        if ($this->participants->contains($participant)) {
-            $this->participants->removeElement($participant);
-            $participant->removeSorty($this);
+        if ($this->inscriptions->contains($inscription)) {
+            $this->inscriptions->removeElement($inscription);
+            // set the owning side to null (unless already changed)
+            if ($inscription->getSortie() === $this) {
+                $inscription->setSortie(null);
+            }
         }
-
-        return $this;
-    }
-
-    public function getDateSortie(): ?\DateTimeInterface
-    {
-        return $this->dateSortie;
-    }
-
-    public function setDateSortie(\DateTimeInterface $dateSortie): self
-    {
-        $this->dateSortie = $dateSortie;
 
         return $this;
     }

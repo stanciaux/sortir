@@ -26,7 +26,7 @@ class OrganizerType extends AbstractType
             ->add('etat')
             ->add('lieu')
             ->add('organisateur')
-            ->add('participants')
+//            ->add('participants')
             ->add('Valider', SubmitType::class)
 
             ->add('lieu', LieuType::class)
