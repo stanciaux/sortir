@@ -123,7 +123,7 @@ class SortieController extends AbstractController
         $user = $this->getUser();
         $userId = $user->getId();
         
-        if ()
+//        if ()
 
         return $this->render('sortie/listSorties.html.twig',
             [
