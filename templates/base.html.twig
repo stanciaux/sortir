@@ -28,7 +28,7 @@
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
 
-                        <a class="nav-link" href="{{ path('sortiesortieslist') }}">Accueil</a>
+                        <a class="nav-link" href="{{ path('sortie_list') }}">Accueil</a>
 
                     </li>
                     <li class="nav-item">
@@ -39,9 +39,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('sortiesortieslist') }}">Liste des sorties</a>
                     </li>
                 {% endif %}
                 {% if app.user is null %}

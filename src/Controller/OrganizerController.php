@@ -12,6 +12,8 @@ use App\Entity\Site;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\SortieType;
+use Doctrine\ORM\Query\AST\Functions\DateDiffFunction;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,105 +96,154 @@ class OrganizerController extends AbstractController
     }
 
     /**
-     * @Route("/cancelorg/{id}", name="cancelorg")
-     */
-    public function cancel($id, EntityManagerInterface $em)
-    {
-       $sorties = $em->getRepository(Sortie::class)->findAll();
-       $sites = $em->getRepository(Site::class)->findAll();
-
-       $sortie = $em->getRepository(Sortie::class)->find($id);
-       $organisateur = $sortie->getOrganisateur();
-       $orgId = $organisateur->getId();
-       $user = $this->getUser();
-       $userId = $user->getId();
-       $etatAnnule = $em->getRepository(Etat::class)->find(6);
-       $dateJour = new \DateTime();
-
-       if ($sortie->getEtat()->getId() == 2
-           and $orgId == $userId
-           and $dateJour <= $sortie->getDateSortie() )
-       {
-           $sortie->setEtat($etatAnnule);
-           $em->flush();
-
-           $this->addFlash('success', "Sortie annulée");
-           return $this->redirectToRoute('sortiesortieslist',
-               [
-                   "sorties" => $sorties,
-                   "sites" => $sites
-               ]);
-       }
-
-        return $this->render('sortie/listSorties.html.twig',
-           [
-               "sorties" => $sorties,
-               "sites" => $sites
-           ]);
-
-    }
-
-    /**
-     * @Route("/removeParty/{id}", name="removeParty")
-     */
-    public function removeParty(Request $request, EntityManagerInterface $em, Sortie $sortie)
-    {
-
-        $user = $this->getUser();
-
-        $form = $this->createForm(RemovePartyType::class, $sortie);
-        $form->handleRequest($request);
-
-        $etatAnnule = $em->getRepository(Etat::class)->find(1);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $sortie->setDescriptioninfos($form['descriptionInfos']->getData());
-            $sortie->setEtat("Annulé");
-
-            $em->flush();
-            $this->addFlash('success', 'La sortie a été annulée !');
-
-            $this->partyList = $em->getRepository(Sortie::class)->findAll();
-
-            return $this->redirectToRoute('sortieslist');
-
-        }
-    }
-
-    /**
      * @Route("/updateParty/{id}", name="updateParty")
      */
     public function updateParty(Sortie $sortie, Request $request, EntityManagerInterface $em)
     {
-        $form = $this->createForm(SortieType::class, $sortie);
-        $form->handleRequest($request);
+//        $form = $this->createForm(SortieType::class, $sortie);
+//        $form->handleRequest($request);
+//
+//        $etatSortie = $em->getRepository(Etat::class)->find(1);
+//        if($form->isSubmitted() && $form->isValid()){
+//            $sortie = $form->getData();
+//
+//            if( $form->get('save')->isClicked()){
+//                $sortie->setEtatSortie("En création");
+//            }elseif( $form->get('publish')->isClicked()){
+//                $sortie->setEtatSortie("Ouvert");
+//            }else{
+//                return $this->redirectToRoute('sorties');
+//            }
+//
+//            $em->persist($sortie);
+//            $em->flush();
+//            $this->addFlash('success', 'La sortie a été modifiée !');
+//
+//            $this->sortiesListe = $em->getRepository(Sortie::class)->findAll();
+//
+//            return $this->redirectToRoute('sortieslist');
+//        }
+//
+//        return $this->render('sortie/listSorties.html.twig', [
+//            'page_name' => 'Sortie mise à jour',
+//            'sortie' => $sortie,
+//            'form' => $form->createView()
+//        ]);
+    }
 
-        $etatSortie = $em->getRepository(Etat::class)->find(1);
-        if($form->isSubmitted() && $form->isValid()){
-            $sortie = $form->getData();
+    /**
+     * @Route("/archiveParty/{id}", name="archive_party")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function archive($id, EntityManagerInterface $em)
+    {
+        $etatArchive = $em->getRepository(Etat::class)->find(7);
+        $sortieAarchiver = $em->getRepository(Sortie::class)->find($id);
+        $dateSortie = $sortieAarchiver->getDateSortie();
+        $dateJour = new \DateTime();
+        $interval = $dateJour->diff($dateSortie);
 
-            if( $form->get('save')->isClicked()){
-                $sortie->setEtatSortie("En création");
-            }elseif( $form->get('publish')->isClicked()){
-                $sortie->setEtatSortie("Ouvert");
-            }else{
-                return $this->redirectToRoute('sorties');
-            }
-
-            $em->persist($sortie);
+        if ($interval->days > 30)
+        {
+            $sortieAarchiver->setEtat($etatArchive);
             $em->flush();
-            $this->addFlash('success', 'La sortie a été modifiée !');
-
-            $this->sortiesListe = $em->getRepository(Sortie::class)->findAll();
-
-            return $this->redirectToRoute('sortieslist');
+            $this->addFlash('success', 'La sortie a été archivée');
+            return $this->redirectToRoute('sortie_list');
+        }
+        else
+        {
+            $this->addFlash('warning', "Le délai d'archivage n'est pas respecté");
+            return $this->redirectToRoute('sortie_list');
         }
 
-        return $this->render('sortie/listSorties.html.twig', [
-            'page_name' => 'Sortie mise à jour',
-            'sortie' => $sortie,
-            'form' => $form->createView()
-        ]);
+        return $this->render('sortie_list');
+    }
+
+    /**
+     * @Route("/publishParty/{id}", name="publish_party")
+     */
+    public function publish($id, EntityManagerInterface $em)
+    {
+        $etatCree = $em->getRepository(Etat::class)->find(1);
+        $etatOuvert = $em->getRepository(Etat::class)->find(2);
+        $sortieAouvrir = $em->getRepository(Sortie::class)->find($id);
+
+        if ($sortieAouvrir->getEtat() == $etatCree)
+        {
+            $sortieAouvrir->setEtat($etatOuvert);
+            $em->flush();
+            $this->addFlash('success', "La sortie est désormais ouverte aux inscriptions");
+            return $this->redirectToRoute('sortie_list');
+        }
+        else {
+            $this->addFlash('warning', "Cette sortie est déjà ouverte");
+            return $this->redirectToRoute('sortie_list');
+        }
+
+        return $this->render('sortie_list');
+    }
+
+    /**
+     * @Route("/cancelParty/{id}", name="cancel_party")
+     */
+    public function cancel($id, EntityManagerInterface $em, Request $request)
+    {
+        $sorties = $em->getRepository(Sortie::class)->findAll();
+        $sites = $em->getRepository(Site::class)->findAll();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+        $organisateur = $sortie->getOrganisateur();
+        $orgId = $organisateur->getId();
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $etatAnnule = $em->getRepository(Etat::class)->find(6);
+        $dateJour = new \DateTime();
+        $formAnnulation = $this->createForm(SortieType::class, $sortie);
+        $formAnnulation->handleRequest($request);
+
+        if ($formAnnulation->isSubmitted() && $formAnnulation->isValid()
+            and $sortie->getEtat()->getId() == 2
+            and $orgId == $userId
+            and $dateJour <= $sortie->getDateSortie() )
+        {
+            $sortie->setEtat($etatAnnule);
+            $em->flush();
+
+            $this->addFlash('success', "Sortie annulée");
+            return $this->redirectToRoute('sortie_list',
+                [
+                    "sorties" => $sorties,
+                    "sites" => $sites
+                ]);
+        }
+
+        return $this->render('sortie/cancelParty.html.twig',
+            [
+                "sortie" => $sortie,
+                "formAnnulation" => $formAnnulation->createView()
+            ]);
+    }
+
+    /**
+     * @Route("/deleteParty/{id}", name="delete_party")
+     */
+    public function delete($id, EntityManagerInterface $em)
+    {
+        $sortieAsupprimer = $em->getRepository(Sortie::class)->find($id);
+        $etatCree = $em->getRepository(Etat::class)->find(1);
+
+        if ($sortieAsupprimer->getEtat() == $etatCree)
+        {
+            $em->remove($sortieAsupprimer);
+            $em->flush();
+            $this->addFlash('success', "La sortie a été supprimée");
+            return $this->redirectToRoute('sortie_list');
+        }
+        else{
+            $this->addFlash('warning', "Cette sortie n'existe pas");
+            return $this->redirectToRoute('sortie_list');
+        }
+        return $this->render('sortie_list');
     }
 
 }

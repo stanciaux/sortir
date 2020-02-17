@@ -74,7 +74,7 @@
         <tbody>
         {% for sortie in sorties %}
             <tr>
-                <td><a href="{{ path('sortiedetail', {'id':sortie.id}) }}">{{ sortie.nom }}</a></td>
+                <td><a href="{{ path('sortie_detail', {'id':sortie.id}) }}">{{ sortie.nom }}</a></td>
                 <td>{{ sortie.dateSortie | format_datetime(locale='fr') }}</td>
                 <td>{{ sortie.dateCloture | date("d/m/Y") }}</td>
                 <td>{{ sortie.inscriptions | length }}/{{ sortie.nbInscriptionsMax }}</td>
@@ -93,45 +93,42 @@
 {#                    SORTIE EN CREA + ORG CONNECTE#}
                     {% if sortie.etat.id == 1 and sortie.organisateur.id == app.user.id %}
                         <a href="">Modifier</a>
-                        <a href="">Supprimer</a>
-                        <a href="">Publier</a>
+                        <a href="{{ path('delete_party', {'id':sortie.id}) }}">Supprimer</a>
+                        <a href="{{ path('publish_party', {'id':sortie.id}) }}">Publier</a>
                     {% endif %}
 
 {#                    SORTIE OUVERTE + ORG CONNECTE#}
                     {% if sortie.etat.id == 2 and sortie.organisateur.id == app.user.id %}
-                        <a href="{{ path('cancelorg', {'id':sortie.id}) }}">Annuler</a>
+                        <a href="{{ path('cancel_party', {'id':sortie.id}) }}">Annuler</a>
                     {% endif %}
 
-{#                    SORTIE OUVERTE + PAS FULL #}
-                    {% if sortie.etat.id == 2
-                        and sortie.inscriptions.count < sortie.nbInscriptionsMax
-                        and sortie.dateCloture > dateJour %}
-                        {% set participation = false %}
+
+{#                    VERIF INSCRIPTION #}
+                    {% set participation = false %}
                         {% for inscription in sortie.inscriptions %}
                             {% if inscription.participant.id == app.user.id %}
                                 {% set participation = true %}
                             {% endif %}
                         {% endfor %}
-{#                              SELON INSCRIPTION#}
-                        {% if participation == true %}
-                            <a href="{{ path('sortieunsubscribe', {'id':sortie.id}) }}">Se désinscrire</a>
-                        {% else %}
-                            <a href="{{ path('sortiesubscribe', {'id':sortie.id}) }}">S'inscrire</a>
+{#                              SI PAS INSCRIT, ETAT OUVERT, NB INSCRIP MAX NON ATTEINT ET DATE CLOTURE NON ATTEINTE #}
+                        {% if participation == false
+                            and sortie.etat.id == 2
+                            and sortie.inscriptions.count < sortie.nbInscriptionsMax
+                            and sortie.dateCloture > dateJour %}
+                            <a href="{{ path('sortie_subscribe', {'id':sortie.id}) }}">S'inscrire</a>
                         {% endif %}
-                    {% endif %}
+{#                              SI INSCRIT, DATE CLOTURE NON ATTEINTE, ET ETAT OUVERT OU CLOTURE #}
+                        {% if participation == true
+                            and sortie.dateCloture > dateJour
+                            and sortie.etat.id == 2 or sortie.etat.id == 3 %}
+                            <a href="{{ path('sortie_unsubscribe', {'id':sortie.id}) }}">Se désinscrire</a>
+                        {% endif %}
 
-{#                    SORTIE CLOTUREE #}
-                    {% if sortie.etat.id == 3 %}
-                        {% set participation = false %}
-                        {% for inscription in sortie.inscriptions %}
-                            {% if inscription.participant.id == app.user.id %}
-                                {% set participation = true %}
-                            {% endif %}
-                        {% endfor %}
-{#                              SELON INSCRIPTION #}
-                        {% if participation == true %}
-                            <a href="">Se désinscrire</a>
-                        {% endif %}
+{#                    SI ADMIN #}
+                    {% if is_granted('ROLE_ADMIN')
+                        and date(sortie.dateSortie) < date('-30days')
+                        and sortie.etat != (sortie.etat.id == 7) %}
+                        <a href="{{ path('archive_party', {'id':sortie.id}) }}">Archiver</a>
                     {% endif %}
                 </td>
             </tr>

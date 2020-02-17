@@ -19,6 +19,21 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findIfNotArchived(){
+        $em = $this->getEntityManager();
+        $dql = "SELECT s 
+                FROM App\Entity\Sortie s 
+                WHERE s.etat = 1
+                OR s.etat = 2
+                OR s.etat = 3
+                OR s.etat = 4
+                OR s.etat = 5
+                OR s.etat = 6";
+        $query = $em->createQuery($dql);
+        $result = $query->getResult();
+        return $result;
+    }
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

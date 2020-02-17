@@ -73,7 +73,7 @@ class Sortie
     private $organisateur;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Inscription", mappedBy="sortie")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscription", mappedBy="sortie", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $inscriptions;
@@ -83,6 +83,12 @@ class Sortie
      * @ORM\JoinColumn(nullable=false)
      */
     private $dateSortie;
+
+    /**
+     * @ORM\Column(type="text")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $motifAnnulation;
 
     public function __construct()
     {
@@ -252,6 +258,18 @@ class Sortie
                 $inscription->setSortie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?string
+    {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(string $motifAnnulation): self
+    {
+        $this->motifAnnulation = $motifAnnulation;
 
         return $this;
     }

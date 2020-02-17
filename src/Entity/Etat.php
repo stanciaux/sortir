@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Etat
 {
+    const OUVERTE='ouverte';
+    const CLOTUREE='clôturée';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -28,8 +30,9 @@ class Etat
      */
     private $sorties;
 
-    public function __construct()
+    public function __construct($id = null)
     {
+        $this->id = $id;
         $this->sorties = new ArrayCollection();
     }
 
@@ -85,4 +88,5 @@ class Etat
 
         return $this;
     }
+
 }

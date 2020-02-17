@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler sortie{% endblock %}
+
+{% block body %}
+
+    <h3 id="username">Annuler la sortie</h3>
+    <br>
+    <dl class="row">
+        <dt class="col-sm-3">Nom : </dt>
+        <dd class="col-sm-9">{{ sortie.nom }}</dd>
+
+        <dt class="col-sm-3">Date : </dt>
+        <dd class="col-sm-9">{{ sortie.dateSortie | date('d-m-Y') }}</dd>
+
+        <dt class="col-sm-3">Site :</dt>
+        <dd class="col-sm-9">{{ sortie.site.nom }}</dd>
+
+        <dt class="col-sm-3">Lieu :</dt>
+        <dd class="col-sm-9">{{ sortie.lieu }}</dd>
+
+        <dt class="col-sm-3">Motif d'annulation :</dt>
+        {{ form_start(formAnnulation) }}
+        {{ form_widget(formAnnulation) }}<button type="submit">Enregistrer</button>
+        {{ form_end(formAnnulation) }}
+    </dl>
+    <a class="btn btn-primary" href="{{ path('sortie_list') }}">Annuler</a>
+{% endblock %}

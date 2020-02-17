@@ -49,13 +49,13 @@ class OrganizerType extends AbstractType
         $builder
 
             ->add('nom', TextType::class)
-            ->add('dateSortie', TextType::class, [
-                'label' => 'Date Evenement (début)',
-                'attr' => [
-                    'class' => 'form-control datetimepicker-input',
-                    'data-toggle' => 'datetimepicker',
-                    'data-target' => '#sortie_dateDebut'
-                ],
+            ->add('dateSortie', DateTimeType::class, [
+                'label' => 'Date de la sortie',
+//                'attr' => [
+//                    'class' => 'form-control datetimepicker-input',
+//                    'data-toggle' => 'datetimepicker',
+//                    'data-target' => '#sortie_dateDebut'
+//                ],
                 'required' => true,
                 'mapped' => false
             ])
