@@ -13,21 +13,39 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 
 /**
- * @Route("/sortie", name="sortie")
+ * @Route("/sortie", name="sortie_")
  */
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/sortieslist", name="sortieslist")
+     * @Route("/list", name="list")
      */
-    public function partyList(EntityManagerInterface $em)
+    public function partyList(EntityManagerInterface $em, Request $request)
     {
-        $sorties = $em->getRepository(Sortie::class)->findAll();
+
+        $parametres = [
+            'site' => $request->get('site'),
+            'search' => $request->get('search'),
+            'dateDebut' => $request->get('dateDebut'),
+            'dateFin' => $request->get('dateFin'),
+            'organisateur' => $request->get('organisateur'),
+            'inscrit' => $request->get('inscrit'),
+            'nonInscrit' => $request->get('nonInscrit'),
+            'sortiesPassees' => $request->get('sortiesPassees'),
+            'idUser' => $this->getUser()->getId(),
+        ];
+
+        dump($parametres);
+
+//        $sorties = [];
+        $sorties = $em->getRepository(Sortie::class)->recherche($parametres);
+        dump($sorties);
+
         $sites = $em->getRepository(Site::class)->findAll();
         $dateDuJour = new \DateTime();
 
         return $this->render(
-            "sortie/listSorties.html.twig",
+            'sortie/listSorties.html.twig',
             [
                 "sorties" => $sorties,
                 "sites" => $sites,
@@ -79,7 +97,7 @@ class SortieController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Inscription validée");
-            return $this->redirectToRoute('sortiesortieslist',
+            return $this->redirectToRoute('sortie_list',
                 [
                     "sorties" => $sorties,
                     "sites" => $sites,
@@ -92,14 +110,14 @@ class SortieController extends AbstractController
             and $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
         ){
             $this->addFlash('warning', "Le nombre maximal de participants est atteint");
-            return $this->redirectToRoute('sortiesortieslist');
+            return $this->redirectToRoute('sortie_list');
         }
 
 //        if ($sortie->getEtat()->getId() == 2
 //            and $sortie->getInscriptions()->contains($user)
 //        ){
 //            $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
-//            return $this->redirectToRoute('sortiesortieslist');
+//            return $this->redirectToRoute('sortie_list');
 //        }
 
         return $this->render('sortie/listSorties.html.twig',
@@ -133,7 +151,7 @@ class SortieController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Inscription annulée");
-            return $this->redirectToRoute('sortiesortieslist',
+            return $this->redirectToRoute('sortie_list',
                 [
                     "sorties" => $sorties,
                     "sites" => $sites,

@@ -117,7 +117,7 @@ class OrganizerController extends AbstractController
            $em->flush();
 
            $this->addFlash('success', "Sortie annulée");
-           return $this->redirectToRoute('sortiesortieslist',
+           return $this->redirectToRoute('sortie_list',
                [
                    "sorties" => $sorties,
                    "sites" => $sites
