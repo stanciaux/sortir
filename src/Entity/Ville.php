@@ -30,6 +30,7 @@ class Ville
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Lieu", mappedBy="ville")
+     *
      */
     private $lieux;
 

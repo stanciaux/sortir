@@ -122,6 +122,7 @@ class SortieController extends AbstractController
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $user = $this->getUser();
         $userId = $user->getId();
+
         $inscription = $em->getRepository(Inscription::class)
                             ->findOneBy(["sortie" => $id,
                                     "participant" => $userId]);

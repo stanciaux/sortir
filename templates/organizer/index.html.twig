@@ -1,156 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une sortie{% endblock %}
+{% block title %}{{ parent() }} {{ page_name }}{% endblock %}
 
 {% block body %}
-    <h3>Créer une sortie</h3>
+    <div class="jumbotron mt-2">
+        <h1 class="text-center display-4 lead">{{ page_name }}</h1>
 
-    {{ form(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.nom) }}
+                {{ form_row(form.dateSortie) }}
+                {{ form_row(form.duree) }}
+                {{ form_row(form.dateCloture) }}
+                {{ form_row(form.nbInscriptionsMax) }}
+                {{ form_row(form.descriptionInfos) }}
+            </div>
 
-{#    {{ form_start(form) }}#}
-{#    <div class="row">#}
-{#        <div class="col">#}
-{#            {{ form_row(form.nom, {#}
-{#                'label': 'Nom de la sortie :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.dateSortie, {#}
-{#                'label': 'Date de la sortie :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.dateCloture, {#}
-{#                'label': 'Date limite d\'inscription :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.nbInscriptionsMax, {#}
-{#                'label': 'Nombre de places :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.duree, {#}
-{#                'label': 'Durée :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.descriptionInfos, {#}
-{#                'label': 'Description et infos :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
 
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.lieu, {#}
-{#                'label': 'Lieu :',#}
-{#                'label_attr': {'class': 'sortie'}}) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.lieu.ville) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.rue) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.codePostal) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.latitude) }}#}
-{#        </div>#}
-{#        <div class="col" id="some-custom-id">#}
-{#            {{ form_row(form.longitude) }}#}
-{#        </div>#}
-{#    </div>#}
-
-{#    {{ form_end(form) }}#}
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {{ form_row(form.lieu) }}
+            </div>
+            <div class="col-4">
+                <button id="btnAddLieu" type="button" class="btn btn-dark"><i class="fas fa-plus-circle"></i></button>
+            </div>
+        </div>
 
 
 
-
-{#    <form>#}
-{#        <div class="d-flex p-1 mb-2 bg-secondary">#}
-{#            <div class="row justify-content-center">#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Nom de la sortie :</label>#}
-{#                    <span class="sortie.nom"></span>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Date de la sortie :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="datetime-local" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Date limite d'inscription#}
-{#                        :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="datetime-local" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Nombre de places :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-number-input" class="flex-fill m-1 p-1">Durée :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="number" id="example-number-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Description et infos :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="row justify-content-center">#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Lieu </label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="number" id="example-number-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Ville :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Rue :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Code Postal :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Latitude :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="example-text-input" class="flex-fill m-1 p-1">Longitude :</label>#}
-{#                    <div class="col-12">#}
-{#                        <input class="form-control" type="text" id="example-text-input">#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </form>#}
+        {{ form_end(form) }}
 
 
 
+        <div class="modal fade" id="modalLieux" tabindex="-1" role="dialog" aria-labelledby="modalLieux" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nom lieu</label>
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Rue</label>
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Latitude</label>
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Longitude</label>
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                            </div>
+{#                            <div class="form-group">#}
+{#                                <label for="selectVilleLieu">Ville</label>#}
+{#                                <select class="form-control" id="selectVilleLieu">#}
+{#                                    {% for ville in Villes %}#}
+{#                                        <option>{{ ville.nomVille }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
-

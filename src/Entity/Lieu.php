@@ -45,7 +45,8 @@ class Lieu
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville", cascade={"persist", "remove"}, inversedBy="lieux")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="Ville", referencedColumnName="id")
+     *
      */
     private $ville;
 
@@ -143,15 +144,19 @@ class Lieu
         return $this;
     }
 
-    public function getVille(): ?Ville
+    /**
+     * @return mixed
+     */
+    public function getVille()
     {
         return $this->ville;
     }
 
-    public function setVille(?Ville $ville): self
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
     {
         $this->ville = $ville;
-
-        return $this;
     }
 }
