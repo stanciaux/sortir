@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Form\LieuType;
 use App\Form\OrganizerType;
-use App\Entity\Etat;
 use App\Entity\Site;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\SortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,15 +56,17 @@ class OrganizerController extends AbstractController
             $sortie = $form->getData();
 
             $dateSortie = $form['dateSortie']->getData();
-            $sortie->setDatedebut(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
+            $sortie->setDateSortie(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
 
             $dateCloture = $form['dateCloture']->getData();
-            $sortie->setDatecloture(\DateTime::createFromFormat('Y/m/d', $dateCloture));
+            $sortie->setDateCloture(\DateTime::createFromFormat('Y/m/d', $dateCloture));
 
-            if ($form->get('save')->isClicked()) {
-                $sortie->setEtatSortie("créée");
+            $etatCree = $em->getRepository(Etat::class)->find(1);
+            $etatOuver = $em->getRepository(Etat::class)->find(1);
+            if ($form->get('Enregistrer')->isClicked()) {
+                $sortie->setEtat($etatCree);
             } elseif ($form->get('publish')->isClicked()) {
-                $sortie->setEtatSortie("ouvert");
+                $sortie->setEtat($etatOuver);
             } else {
                 //TODO changer la route 'organizer' par la page affichant la récap de la saisie
                 return $this->redirectToRoute('organizer');
@@ -79,11 +82,13 @@ class OrganizerController extends AbstractController
         }
 
 
-        return $this->render('organizer/index.html.twig', [
+        return $this->render('organizer/index.html.twig'
+            , [
             'page_name' => 'Ajouter une sortie',
             'form' => $form->createView(),
             'formLieu' => $formLieu->createView(),
             'listVille' => $listVille
+
         ]);
 
     }
@@ -125,6 +130,69 @@ class OrganizerController extends AbstractController
                "sites" => $sites
            ]);
 
+    }
+
+    /**
+     * @Route("/removeParty/{id}", name="removeParty")
+     */
+    public function removeParty(Request $request, EntityManagerInterface $em, Sortie $sortie)
+    {
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(RemovePartyType::class, $sortie);
+        $form->handleRequest($request);
+
+        $etatAnnule = $em->getRepository(Etat::class)->find(1);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $sortie->setDescriptioninfos($form['descriptionInfos']->getData());
+            $sortie->setEtat("Annulé");
+
+            $em->flush();
+            $this->addFlash('success', 'La sortie a été annulée !');
+
+            $this->partyList = $em->getRepository(Sortie::class)->findAll();
+
+            return $this->redirectToRoute('sortieslist');
+
+        }
+    }
+
+    /**
+     * @Route("/updateParty/{id}", name="updateParty")
+     */
+    public function updateParty(Sortie $sortie, Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(SortieType::class, $sortie);
+        $form->handleRequest($request);
+
+        $etatSortie = $em->getRepository(Etat::class)->find(1);
+        if($form->isSubmitted() && $form->isValid()){
+            $sortie = $form->getData();
+
+            if( $form->get('save')->isClicked()){
+                $sortie->setEtatSortie("En création");
+            }elseif( $form->get('publish')->isClicked()){
+                $sortie->setEtatSortie("Ouvert");
+            }else{
+                return $this->redirectToRoute('sorties');
+            }
+
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash('success', 'La sortie a été modifiée !');
+
+            $this->sortiesListe = $em->getRepository(Sortie::class)->findAll();
+
+            return $this->redirectToRoute('sortieslist');
+        }
+
+        return $this->render('sortie/listSorties.html.twig', [
+            'page_name' => 'Sortie mise à jour',
+            'sortie' => $sortie,
+            'form' => $form->createView()
+        ]);
     }
 
 }

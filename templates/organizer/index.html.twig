@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% extends 'base.html.twig' %}
-
 {% block title %}{{ parent() }} {{ page_name }}{% endblock %}
 
 {% block body %}
@@ -13,11 +11,11 @@
         <div class="row">
             <div class="col">
                 {{ form_row(form.nom) }}
-                {{ form_row(form.datedebut) }}
+                {{ form_row(form.dateSortie) }}
                 {{ form_row(form.duree) }}
-                {{ form_row(form.datecloture) }}
-                {{ form_row(form.nbinscriptionsmax) }}
-                {{ form_row(form.descriptioninfos) }}
+                {{ form_row(form.dateCloture) }}
+                {{ form_row(form.nbInscriptionsMax) }}
+                {{ form_row(form.descriptionInfos) }}
             </div>
 
 
@@ -50,29 +48,29 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Nom lieux</label>
-                                <input type="nom" class="form-control" id="nomLieux" aria-describedby="nomLieux" placeholder="">
+                                <label for="exampleInputEmail1">Nom lieu</label>
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Rue</label>
-                                <input type="nom" class="form-control" id="nomLieux" aria-describedby="nomLieux" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Latitude</label>
-                                <input type="nom" class="form-control" id="nomLieux" aria-describedby="nomLieux" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Longitude</label>
-                                <input type="nom" class="form-control" id="nomLieux" aria-describedby="nomLieux" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
                             </div>
-                            <div class="form-group">
-                                <label for="selectVilleLieux">Ville</label>
-                                <select class="form-control" id="selectVilleLieux">
-                                    {% for ville in listVilles %}
-                                        <option>{{ ville.nomVille }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+{#                            <div class="form-group">#}
+{#                                <label for="selectVilleLieu">Ville</label>#}
+{#                                <select class="form-control" id="selectVilleLieu">#}
+{#                                    {% for ville in Villes %}#}
+{#                                        <option>{{ ville.nomVille }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
 
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

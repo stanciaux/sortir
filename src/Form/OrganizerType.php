@@ -85,27 +85,27 @@ class OrganizerType extends AbstractType
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
-                'choice_label' => 'nom_site',
+                'choice_label' => 'nom',
                 'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('c')->orderBy('c.nomSite', 'ASC');
+                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
                 }
             ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-success w-100'
+                    'class' => 'btn btn-dark btn-sn'
                 ]
             ])
-            ->add('Publier la sortie', SubmitType::class, [
+            ->add('PublierLaSortie', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-primary w-100'
+                    'class' => 'btn btn w-100'
                 ]
             ])
             ->add('Annuler', SubmitType::class, [
                 'label' => 'Annuler',
                 'attr' => [
-                    'class' => 'btn btn-danger w-100'
+                    'class' => 'btn btn w-100'
                 ]
             ]);
 
