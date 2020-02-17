@@ -84,27 +84,4 @@ class OrganizerController extends AbstractController
            ]);
     }
 
-//    /**
-//     * @Route("/view_party", name="view_party")
-//     * afficher détail dans la page twig
-//     */
-//    public function listParty(EntityManagerInterface $em)
-//    {
-//
-//        $species = $this->getDoctrine()
-//            ->getRepository(Sortie::class)
-//            ->findAll();
-//
-//        return $this->render("specie/list.html.twig",
-//            [
-//                'sorties' => $sorties,
-//            ]);
-//
-//    }
-//    public function index()
-//    {
-//        return $this->render('organizer/index.html.twig', [
-//            'controller_name' => 'OrganizerController',
-//        ]);
-//    }
 }

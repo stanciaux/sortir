@@ -95,12 +95,12 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortiesortieslist');
         }
 
-//        if ($sortie->getEtat()->getId() == 2
-//            and $sortie->getInscriptions()->contains($user)
-//        ){
-//            $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
-//            return $this->redirectToRoute('sortiesortieslist');
-//        }
+        if ($sortie->getEtat()->getId() == 2
+            and $sortie->getInscriptions()->contains($user)
+        ){
+            $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
+            return $this->redirectToRoute('sortiesortieslist');
+        }
 
         return $this->render('sortie/listSorties.html.twig',
             [
