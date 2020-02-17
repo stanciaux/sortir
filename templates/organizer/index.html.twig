@@ -1,41 +1,75 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}{{ parent() }} {{ page_name }}{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
     <div class="jumbotron mt-2">
         <h1 class="text-center display-4 lead">{{ page_name }}</h1>
-
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <div class="row">
-            <div class="col">
-                {{ form_row(form.nom) }}
-                {{ form_row(form.dateSortie) }}
-                {{ form_row(form.duree) }}
-                {{ form_row(form.dateCloture) }}
-                {{ form_row(form.nbInscriptionsMax) }}
-                {{ form_row(form.descriptionInfos) }}
+        <div class="form-row form-group row nom">
+            <div class="form-group col-sm-6">
+                <div class="row">
+                    <div class="col-6"><p>Nom de la sortie :</p></div>
+                    <div class="col-6">{{ form(form.nom) }}</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"><p>Date et heure de la sortie :</p></div>
+                    <div class="col-6">{{ form(form.dateSortie) }}</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"><p>Date limite d'inscription :</p></div>
+                    <div class="col-6">{{ form(form.dateCloture) }}</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"><p>Nombre de places :</p></div>
+                    <div class="col-3">{{ form(form.nbInscriptionsMax) }}</div>
+                    <div class="col-3"><p></p></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"><p>Durée :</p></div>
+                    <div class="col-2">{{ form(form.duree) }}</div>
+                    <div class="col-4"><p></p> minutes</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6"><p>Description et infos :</p></div>
+                    <div class="col-6">{{ form(form.descriptionInfos) }}</div>
+                </div>
             </div>
+            <div class="form-group col-sm-6">
+                <div class="row">
+                    <div class="col-4"><p>Lieu :</p></div>
+                    <div class="col-4">{{ form(form.lieu) }}</div>
+                    {#                        TODO insérer le lien vers la page "ajouter lieu"#}
+                    {#                        <a href="{{ path('') }}">#}
+                    <img src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"/>
+                    </a>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-6"><p>Ville :</p></div>
+                    <div class="col-6">{{ form(formLieu.nomLieu) }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><p>Rue :</p></div>
+                    <div class="col-6">{{ form(formLieu.rue) }}</div>
+                </div>
+{#TODO : Générer les coordonnées de la ville automatiquement en fonction du lieu choisit#}
 
-
+            </div>
         </div>
-        <div class="row">
-            <div class="col-4">
-                {{ form_row(form.lieu) }}
-            </div>
-            <div class="col-4">
-                <button id="btnAddLieu" type="button" class="btn btn-dark"><i class="fas fa-plus-circle"></i></button>
-            </div>
-        </div>
-
 
 
         {{ form_end(form) }}
 
 
-
-        <div class="modal fade" id="modalLieux" tabindex="-1" role="dialog" aria-labelledby="modalLieux" aria-hidden="true">
+        <div class="modal fade" id="modalLieux" tabindex="-1" role="dialog" aria-labelledby="modalLieux"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
@@ -49,28 +83,32 @@
                         <form>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nom lieu</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
+                                       placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Rue</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
+                                       placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Latitude</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
+                                       placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Longitude</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu" placeholder="">
+                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
+                                       placeholder="">
                             </div>
-{#                            <div class="form-group">#}
-{#                                <label for="selectVilleLieu">Ville</label>#}
-{#                                <select class="form-control" id="selectVilleLieu">#}
-{#                                    {% for ville in Villes %}#}
-{#                                        <option>{{ ville.nomVille }}</option>#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                            </div>#}
+                            {#                            <div class="form-group">#}
+                            {#                                <label for="selectVilleLieu">Ville</label>#}
+                            {#                                <select class="form-control" id="selectVilleLieu">#}
+                            {#                                    {% for ville in Villes %}#}
+                            {#                                        <option>{{ ville.nomVille }}</option>#}
+                            {#                                    {% endfor %}#}
+                            {#                                </select>#}
+                            {#                            </div>#}
 
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
@@ -80,4 +118,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

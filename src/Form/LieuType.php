@@ -17,13 +17,7 @@ class LieuType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder
-//            ->add('nomLieu')
-//            ->add('rue')
-//            ->add('latitude')
-//            ->add('longitude')
-//        ;
-//    }
+
         $builder
             ->add('nomLieu', TextType::class, [
                 'label' => 'Nom'
@@ -41,7 +35,7 @@ class LieuType extends AbstractType
             ->add('send',SubmitType::class, [
                 'label' => 'Ajouter',
                 'attr' => [
-                    'class' => 'btn btn-primary w-100'
+                    'class' => 'btn btn-dark btn-sn'
                 ]
             ])
         ;
