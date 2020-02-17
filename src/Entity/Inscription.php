@@ -11,6 +11,7 @@ class Inscription
 {
     /**
      * @ORM\Column(type="date")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $dateInscription;
 

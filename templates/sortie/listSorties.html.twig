@@ -103,7 +103,7 @@
 
 {#                    SORTIE OUVERTE + ORG CONNECTE#}
                     {% if sortie.etat.id == 2 and sortie.organisateur.id == app.user.id %}
-                        <a href="">Annuler</a>
+                        <a href="{{ path('cancelorg', {'id':sortie.id}) }}">Annuler</a>
                     {% endif %}
 
 {#                    SORTIE OUVERTE + PAS FULL #}
@@ -118,7 +118,7 @@
                         {% endfor %}
 {#                              SELON INSCRIPTION#}
                         {% if participation == true %}
-                            <a href="">Se désinscrire</a>
+                            <a href="{{ path('sortieunsubscribe', {'id':sortie.id}) }}">Se désinscrire</a>
                         {% else %}
                             <a href="{{ path('sortiesubscribe', {'id':sortie.id}) }}">S'inscrire</a>
                         {% endif %}

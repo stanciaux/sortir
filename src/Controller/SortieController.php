@@ -88,17 +88,17 @@ class SortieController extends AbstractController
                 );
         }
 
-//        if ($sortie->getEtat()->getId() == 2
-//            and $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
-//        ){
-//            $this->addFlash('error', "Le nombre maximal de participants est atteint");
-//            return $this->redirectToRoute('sortiesortieslist');
-//        }
-//
+        if ($sortie->getEtat()->getId() == 2
+            and $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
+        ){
+            $this->addFlash('warning', "Le nombre maximal de participants est atteint");
+            return $this->redirectToRoute('sortiesortieslist');
+        }
+
 //        if ($sortie->getEtat()->getId() == 2
 //            and $sortie->getInscriptions()->contains($user)
 //        ){
-//            $this->addFlash('error', "Vous êtes déjà inscrit à cette sortie");
+//            $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
 //            return $this->redirectToRoute('sortiesortieslist');
 //        }
 
@@ -122,8 +122,25 @@ class SortieController extends AbstractController
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $user = $this->getUser();
         $userId = $user->getId();
-        
-//        if ()
+
+        $inscription = $em->getRepository(Inscription::class)
+                            ->findOneBy(["sortie" => $id,
+                                    "participant" => $userId]);
+
+        if ($sortie->getEtat()->getId() == 2)
+        {
+            $em->remove($inscription);
+            $em->flush();
+
+            $this->addFlash('success', "Inscription annulée");
+            return $this->redirectToRoute('sortiesortieslist',
+                [
+                    "sorties" => $sorties,
+                    "sites" => $sites,
+                    "dateJour" => $dateDuJour
+                ]
+            );
+        }
 
         return $this->render('sortie/listSorties.html.twig',
             [
