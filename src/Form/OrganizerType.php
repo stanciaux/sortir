@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\AbstractType;
@@ -21,33 +22,22 @@ class OrganizerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('nom', TextType::class)
             ->add('dateSortie', DateTimeType::class, [
                 'label' => 'Date de la sortie',
-//                'attr' => [
-//                    'class' => 'form-control datetimepicker-input',
-//                    'data-toggle' => 'datetimepicker',
-//                    'data-target' => '#sortie_dateDebut'
-//                ],
+                'years' => range(2019,2050),
                 'required' => true,
-                'mapped' => false
             ])
             ->add('duree', IntegerType::class)
-            ->add('dateCloture', TextType::class, [
+            ->add('dateCloture', DateTimeType::class, [
                 'label' => 'Date Cloture inscription',
-                'attr' => [
-                    'class' => 'form-control datetimepicker-input',
-                    'data-toggle' => 'datetimepicker',
-                    'data-target' => '#sortie_dateCloture'
-                ],
+                'years' => range(2019,2050),
                 'required' => true,
-                'mapped' => false
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre d\'inscription maximum'
             ])
-            ->add('descriptionInfos', TextType::class, [
+            ->add('descriptionInfos', TextareaType::class, [
                 'label' => 'Description'
             ])
             ->add('lieu', EntityType::class, [
@@ -57,29 +47,29 @@ class OrganizerType extends AbstractType
                     return $repository->createQueryBuilder('c')->orderBy('c.nomLieu', 'ASC');
                 }
             ])
-            ->add('site', EntityType::class, [
-                'class' => Site::class,
-                'choice_label' => 'nom',
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
-                }
-            ])
+//            ->add('site', EntityType::class, [
+//                'class' => Site::class,
+//                'choice_label' => 'nom',
+//                'query_builder' => function (EntityRepository $repository) {
+//                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
+//                }
+//            ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-dark btn-sn'
+                    'class' => 'btn btn-dark submit'
                 ]
             ])
             ->add('PublierLaSortie', SubmitType::class, [
-                'label' => 'Publier',
+                'label' => 'Publier la sortie',
                 'attr' => [
-                    'class' => 'btn btn w-100'
+                    'class' => 'btn btn-dark submit'
                 ]
             ])
             ->add('Annuler', SubmitType::class, [
                 'label' => 'Annuler',
                 'attr' => [
-                    'class' => 'btn btn w-100'
+                    'class' => 'btn btn-dark submit'
                 ]
             ]);
 

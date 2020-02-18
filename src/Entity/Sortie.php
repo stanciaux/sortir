@@ -130,7 +130,7 @@ class Sortie
         return $this->dateCloture;
     }
 
-    public function setDateCloture(\DateTimeInterface $dateCloture): self
+    public function setDateCloture(?\DateTimeInterface $dateCloture): self
     {
         $this->dateCloture = $dateCloture;
 
@@ -178,7 +178,7 @@ class Sortie
         return $this->dateSortie;
     }
 
-    public function setDateSortie(\DateTimeInterface $dateSortie): self
+    public function setDateSortie(?\DateTimeInterface $dateSortie): self
     {
         $this->dateSortie = $dateSortie;
 
