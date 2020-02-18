@@ -22,20 +22,16 @@ class OrganizerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('nom', TextType::class)
             ->add('dateSortie', DateTimeType::class, [
                 'label' => 'Date début de la sortie',
+                'years' => range(2019,2050),
                 'required' => true,
             ])
             ->add('duree', IntegerType::class)
-            ->add('dateCloture', DateType::class, [
+            ->add('dateCloture', DateTimeType::class, [
                 'label' => 'Date Cloture inscription',
-                'attr' => [
-                    'class' => 'fa fa-calendar',
-                    'data-toggle' => 'datetimepicker',
-                    'data-target' => '#sortie_dateCloture'
-                ],
+                'years' => range(2019,2050),
                 'required' => true,
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
@@ -51,13 +47,13 @@ class OrganizerType extends AbstractType
                     return $repository->createQueryBuilder('c')->orderBy('c.nomLieu', 'ASC');
                 }
             ])
-            ->add('site', EntityType::class, [
-                'class' => Site::class,
-                'choice_label' => 'nom',
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
-                }
-            ])
+//            ->add('site', EntityType::class, [
+//                'class' => Site::class,
+//                'choice_label' => 'nom',
+//                'query_builder' => function (EntityRepository $repository) {
+//                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
+//                }
+//            ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [

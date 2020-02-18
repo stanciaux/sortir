@@ -11,7 +11,6 @@ use App\Form\OrganizerType;
 use App\Entity\Site;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\SortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,6 +34,8 @@ class OrganizerController extends AbstractController
         $formLieu->handleRequest($request);
         $form = $this->createForm(OrganizerType::class, $sortie);
         $form->handleRequest($request);
+        dump($sortie);
+//        die();
 
         //On récupére toute la liste de la class Ville
         $listVille = $em->getRepository(Ville::class)->findAll();
@@ -44,6 +45,7 @@ class OrganizerController extends AbstractController
             $lieu = $formLieu->getData();
             $sortie = $form->getData();
             $formResend = $this->createForm(OrganizerType::class, $sortie);
+            // Soumettre les informations au formulaire
             $formResend->handleRequest($request);
 
             // On enregistre notre objet $lieu dans la base de données
@@ -56,14 +58,16 @@ class OrganizerController extends AbstractController
             $sortie = $form->getData();
 
             $dateSortie = $form['dateSortie']->getData();
+//            $sortie->setDatedebut(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
             $dateCloture = $form['dateCloture']->getData();
+//            $sortie->setDatecloture(\DateTime::createFromFormat('Y/m/d', $datecloture));
 
             $etatCree = $em->getRepository(Etat::class)->find(1);
-            $etatOuver = $em->getRepository(Etat::class)->find(1);
+            $etatOuvert = $em->getRepository(Etat::class)->find(1);
             if ($form->get('Enregistrer')->isClicked()) {
                 $sortie->setEtat($etatCree);
             } elseif ($form->get('publish')->isClicked()) {
-                $sortie->setEtat($etatOuver);
+                $sortie->setEtat($etatOuvert);
             } else {
                 //TODO changer la route 'organizer' par la page affichant la récap de la saisie
                 return $this->redirectToRoute('organizer');

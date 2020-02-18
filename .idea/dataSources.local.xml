@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="dataSourceStorageLocal">
-    <data-source name="sortir@10.27.200.9" uuid="bd53dcfb-6bf8-47ea-9d12-99aa75da24a2">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" exact-version="0" />
-      <schema-mapping />
-    </data-source>
-  </component>
-</project>

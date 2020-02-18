@@ -45,78 +45,77 @@
                 <div class="row">
                     <div class="col-4"><p>Lieu :</p></div>
                     <div class="col-4">{{ form(form.lieu) }}</div>
-                    {#                        TODO insérer le lien vers la page "ajouter lieu"#}
+                    {#TODO insérer le lien vers la page "ajouter lieu"#}
                     {#                        <a href="{{ path('') }}">#}
+
                     <img src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"/>
-                    </a>
-                    </button>
+{#                    </a>#}
+{#                    </button>#}
                 </div>
-                <div class="row">
-                    <div class="col-6"><p>Ville :</p></div>
-                    <div class="col-6">{{ form(formLieu.nomLieu) }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-6"><p>Rue :</p></div>
-                    <div class="col-6">{{ form(formLieu.rue) }}</div>
-                </div>
-{#TODO : Générer les coordonnées de la ville automatiquement en fonction du lieu choisit#}
+                {#                <div class="row">#}
+                {#                    <div class="col-6"><p>Ville :</p></div>#}
+                {#                    <div class="col-6">{{ form(formLieu.ville) }}</div>#}
+                {#                </div>#}
+                {#                <div class="row">#}
+                {#                    <div class="col-6"><p>Rue :</p></div>#}
+                {#                    <div class="col-6">{{ form(formLieu.rue) }}</div>#}
+                {#                #}{#                </div>#}
 
-            </div>
-        </div>
+                {#            <div class="form-group">#}
+                {#                <label for="selectVilleLieu">Ville</label>#}
+                {#                <select class="form-control" id="selectVilleLieu">#}
+                {#                    {% for ville in listVille %}#}
+                {#                        <div class="col-8"><p>Ville :</p></div>#}
+                {#                        <div class="col-4"><option>{{ ville.nomVille }}</option></p></div>#}
+                {#                    {% endfor %}#}
+                {#                </select>#}
+                {#            </div>#}
+
+    {{ form_end(form) }}
+                <div class="modal-body">
 
 
-        {{ form_end(form) }}
+                    <div class="row">
+                        <div class="col-6"><p>Ville :</p></div>
 
-
-        <div class="modal fade" id="modalLieux" tabindex="-1" role="dialog" aria-labelledby="modalLieux"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <select class="col-6" id="selectVilleLieu">
+                            {% for ville in listVille %}#}
+                                <option>{{ ville.nomVille }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nom lieu</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
-                                       placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Rue</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
-                                       placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Latitude</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
-                                       placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Longitude</label>
-                                <input type="nom" class="form-control" id="nomLieu" aria-describedby="nomLieu"
-                                       placeholder="">
-                            </div>
-                            {#                            <div class="form-group">#}
-                            {#                                <label for="selectVilleLieu">Ville</label>#}
-                            {#                                <select class="form-control" id="selectVilleLieu">#}
-                            {#                                    {% for ville in Villes %}#}
-                            {#                                        <option>{{ ville.nomVille }}</option>#}
-                            {#                                    {% endfor %}#}
-                            {#                                </select>#}
-                            {#                            </div>#}
-
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-
+                    <div class="row">
+                        <div class="col-6"><p>Rue :</p></div>
+                        <div class="col-6">
+                            <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"
+                                   placeholder=""></div>
                     </div>
+                    <div class="row">
+                        <div class="col-6"><p>Code postal :</p></div>
+                        <div class="col-6">
+                            <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"
+                                   placeholder=""></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><p>Latitude :</p></div>
+                        <div class="col-6">
+                            <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"
+                                   placeholder=""></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><p>Longitude :</p></div>
+                        <div class="col-6">
+                            <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"
+                                   placeholder=""></div>
+                    </div>
+
+
                 </div>
             </div>
+
         </div>
+    </div>
+    </div>
     </div>
 
 {% endblock %}
