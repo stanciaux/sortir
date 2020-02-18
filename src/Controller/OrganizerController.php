@@ -15,6 +15,7 @@ use App\Form\SortieType;
 use Doctrine\ORM\Query\AST\Functions\DateDiffFunction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,6 +37,8 @@ class OrganizerController extends AbstractController
         $formLieu->handleRequest($request);
         $form = $this->createForm(OrganizerType::class, $sortie);
         $form->handleRequest($request);
+        dump($sortie);
+//        die();
 
         //On récupére toute la liste de la class Ville
         $listVille = $em->getRepository(Ville::class)->findAll();
@@ -45,30 +48,29 @@ class OrganizerController extends AbstractController
             $lieu = $formLieu->getData();
             $sortie = $form->getData();
             $formResend = $this->createForm(OrganizerType::class, $sortie);
+            // Soumettre les informations au formulaire
             $formResend->handleRequest($request);
 
             // On enregistre notre objet $lieu dans la base de données
             $em->persist($lieu);
             $em->flush();
             $this->addFlash('success', 'Le lieu a été ajouté !');
-
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sortie = $form->getData();
 
             $dateSortie = $form['dateSortie']->getData();
-            $sortie->setDateSortie(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
-
+//            $sortie->setDatedebut(\DateTime::createFromFormat('Y/m/d H:i', $dateSortie));
             $dateCloture = $form['dateCloture']->getData();
-            $sortie->setDateCloture(\DateTime::createFromFormat('Y/m/d', $dateCloture));
+//            $sortie->setDatecloture(\DateTime::createFromFormat('Y/m/d', $datecloture));
 
             $etatCree = $em->getRepository(Etat::class)->find(1);
-            $etatOuver = $em->getRepository(Etat::class)->find(1);
+            $etatOuvert = $em->getRepository(Etat::class)->find(1);
             if ($form->get('Enregistrer')->isClicked()) {
                 $sortie->setEtat($etatCree);
             } elseif ($form->get('publish')->isClicked()) {
-                $sortie->setEtat($etatOuver);
+                $sortie->setEtat($etatOuvert);
             } else {
                 //TODO changer la route 'organizer' par la page affichant la récap de la saisie
                 return $this->redirectToRoute('organizer');
@@ -86,12 +88,12 @@ class OrganizerController extends AbstractController
 
         return $this->render('organizer/index.html.twig'
             , [
-            'page_name' => 'Ajouter une sortie',
-            'form' => $form->createView(),
-            'formLieu' => $formLieu->createView(),
-            'listVille' => $listVille
+                'page_name' => 'Créer une sortie',
+                'form' => $form->createView(),
+                'formLieu' => $formLieu->createView(),
+                'listVille' => $listVille
 
-        ]);
+            ]);
 
     }
 
@@ -144,15 +146,12 @@ class OrganizerController extends AbstractController
 //        $dateJour = new \DateTime();
 //        $interval = $dateJour->diff($dateSortie);
 
-        if ($sortieAarchiver->isArchivagePossible())
-        {
+        if ($sortieAarchiver->isArchivagePossible()) {
             $sortieAarchiver->setEtat($etatArchive);
             $em->flush();
             $this->addFlash('success', 'La sortie a été archivée');
             return $this->redirectToRoute('sortie_list');
-        }
-        else
-        {
+        } else {
             $this->addFlash('warning', "Le délai d'archivage n'est pas respecté");
             return $this->redirectToRoute('sortie_list');
         }
@@ -169,14 +168,12 @@ class OrganizerController extends AbstractController
         $etatOuvert = $em->getRepository(Etat::class)->find(2);
         $sortieAouvrir = $em->getRepository(Sortie::class)->find($id);
 
-        if ($sortieAouvrir->getEtat() == $etatCree)
-        {
+        if ($sortieAouvrir->getEtat() == $etatCree) {
             $sortieAouvrir->setEtat($etatOuvert);
             $em->flush();
             $this->addFlash('success', "La sortie est désormais ouverte aux inscriptions");
             return $this->redirectToRoute('sortie_list');
-        }
-        else {
+        } else {
             $this->addFlash('warning', "Cette sortie est déjà ouverte");
             return $this->redirectToRoute('sortie_list');
         }
@@ -205,8 +202,7 @@ class OrganizerController extends AbstractController
         if ($formAnnulation->isSubmitted() && $formAnnulation->isValid()
             and $sortie->getEtat()->getId() == 2
             and $orgId == $userId
-            and $dateJour <= $sortie->getDateSortie() )
-        {
+            and $dateJour <= $sortie->getDateSortie()) {
             $sortie->setEtat($etatAnnule);
             $em->flush();
 
@@ -234,18 +230,15 @@ class OrganizerController extends AbstractController
         $sortieAsupprimer = $em->getRepository(Sortie::class)->find($id);
         $etatCree = $em->getRepository(Etat::class)->find(1);
 
-        if ($sortieAsupprimer->getEtat() == $etatCree)
-        {
+        if ($sortieAsupprimer->getEtat() == $etatCree) {
             $em->remove($sortieAsupprimer);
             $em->flush();
             $this->addFlash('success', "La sortie a été supprimée");
             return $this->redirectToRoute('sortie_list');
-        }
-        else{
+        } else {
             $this->addFlash('warning', "Cette sortie n'existe pas");
             return $this->redirectToRoute('sortie_list');
         }
         return $this->redirectToRoute('sortie_list');
     }
-
 }
