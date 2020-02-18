@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Inscription;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Form\FiltreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,7 @@ class SortieController extends AbstractController
      */
     public function partyList(EntityManagerInterface $em, Request $request)
     {
+//        $filtreForm = $this->createForm(FiltreType::class);
 
         $parametres = [
             'site' => $request->get('site'),
@@ -32,14 +34,15 @@ class SortieController extends AbstractController
             'inscrit' => $request->get('inscrit'),
             'nonInscrit' => $request->get('nonInscrit'),
             'sortiesPassees' => $request->get('sortiesPassees'),
-            'idUser' => $this->getUser()->getId(),
+            'user' => $this->getUser(),
+            'userId' => $this->getUser()->getId(),
         ];
 
-        dump($parametres);
 
-//        $sorties = [];
+
+
         $sorties = $em->getRepository(Sortie::class)->recherche($parametres);
-        dump($sorties);
+
 
         $sites = $em->getRepository(Site::class)->findAll();
         $dateDuJour = new \DateTime();
@@ -47,6 +50,7 @@ class SortieController extends AbstractController
         return $this->render(
             'sortie/listSorties.html.twig',
             [
+//                "filtreForm" => $filtreForm->createView(),
                 "sorties" => $sorties,
                 "sites" => $sites,
                 "dateJour" => $dateDuJour
