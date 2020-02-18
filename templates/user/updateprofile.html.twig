@@ -12,10 +12,17 @@
 
     <div class="col-8 offset-2">
     {{ form_start(userUpdateForm) }}
-    {{ form_widget(userUpdateForm) }}<button type="submit">Enregistrer</button>
-    {{ form_end(userUpdateForm) }}
+    {{ form_widget(userUpdateForm) }}
+        <div class="row col-sm-12">
+            <div class="row col-sm-6">
+            <button id="btn-mod-profil" class="btn  btn-outline-dark" type="submit">Enregistrer</button>
+            </div>
+            <div class="row col-sm-6">
+                <a class="btn  btn-outline-dark" href="{{ path('sortie_list') }}">Annuler</a>
+            </div>
 
-    <a class="btn btn-primary" href="{{ path('sortie_list') }}">Annuler</a>
+        </div>
+    {{ form_end(userUpdateForm) }}
 
     </div>
 

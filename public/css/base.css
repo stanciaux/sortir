@@ -81,6 +81,8 @@ table tr {
 #boutonsActions {
    margin-left: 2px;
    margin-right: 2px;
+   /*width: 1.9em;*/
+   /*height: 1.9em;*/
 }
 
 .nom {
@@ -92,4 +94,7 @@ table tr {
    position: center;
 }
 
+#btn-mod-profil{
+   margin-bottom: 1em;
+}
 
