@@ -100,6 +100,7 @@ class OrganizerController extends AbstractController
      */
     public function updateParty(Sortie $sortie, Request $request, EntityManagerInterface $em)
     {
+
 //        $form = $this->createForm(SortieType::class, $sortie);
 //        $form->handleRequest($request);
 //

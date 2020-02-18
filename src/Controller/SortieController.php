@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Form\FiltreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,15 +22,38 @@ class SortieController extends AbstractController
     /**
      * @Route("/list", name="list")
      */
-    public function partyList(EntityManagerInterface $em)
+    public function partyList(EntityManagerInterface $em, Request $request)
     {
+
         $sorties = $em->getRepository(Sortie::class)->findIfNotArchived();
+
+//        $filtreForm = $this->createForm(FiltreType::class);
+
+        $parametres = [
+            'site' => $request->get('site'),
+            'search' => $request->get('search'),
+            'dateDebut' => $request->get('dateDebut'),
+            'dateFin' => $request->get('dateFin'),
+            'organisateur' => $request->get('organisateur'),
+            'inscrit' => $request->get('inscrit'),
+            'nonInscrit' => $request->get('nonInscrit'),
+            'sortiesPassees' => $request->get('sortiesPassees'),
+            'user' => $this->getUser(),
+            'userId' => $this->getUser()->getId(),
+        ];
+
+
+
+
+        $sorties = $em->getRepository(Sortie::class)->recherche($parametres);
+
         $sites = $em->getRepository(Site::class)->findAll();
         $dateDuJour = new \DateTime();
 
         return $this->render(
-            "sortie/listSorties.html.twig",
+            'sortie/listSorties.html.twig',
             [
+//                "filtreForm" => $filtreForm->createView(),
                 "sorties" => $sorties,
                 "sites" => $sites,
                 "dateJour" => $dateDuJour
@@ -78,7 +102,9 @@ class SortieController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Inscription validée");
+
             return $this->redirectToRoute('sortie_list');
+
         }
 
         if ($sortie->getEtat()->getLibelle() == Etat::OUVERTE &&
@@ -116,6 +142,7 @@ class SortieController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Inscription annulée");
+
         }
 
         return $this->redirectToRoute('sortie_list');    }
