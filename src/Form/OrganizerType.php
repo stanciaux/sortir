@@ -20,32 +20,6 @@ class OrganizerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder
-//            ->add('nom', TextType::class)
-//
-//            ->add('dateSortie', DateType::class, array('label' => "Date de la sortie : "))
-//            ->add('dateCloture', DateType::class, array('label' => "Date limite d'inscription : "))
-//            ->add('duree', NumberType::class, array('label' => 'Durée : '))
-//            ->add('nbInscriptionsMax', NumberType::class, array('label' => 'Nombre de places : '))
-//            ->add('descriptionInfos', TextareaType::class, array('label' => "Description et infos : "))
-//            ->add('lieu', ChoiceType::class, array('label' => "Lieu : "))
-//            ->add('Valider', SubmitType::class)
-////            ->add('urlPhoto')
-//
-////            ->add('site', HiddenType::class, [
-////                'data' => '',
-////            ]);
-////            ->add('etat', HiddenType::class, [
-////                'data' => 'ouverte',
-////            ]);
-//////            ->add('lieu')
-////            ->add('organisateur')
-////            ->add('participants')
-//
-////
-////            ->add('lieu', LieuType::class)
-//        ;
-//    }
         $builder
 
             ->add('nom', TextType::class)
