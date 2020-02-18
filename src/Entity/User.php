@@ -66,6 +66,7 @@ class User implements UserInterface
     private $sortiesOrganisees;
 
     /**
+     * @var Inscription[]
      * @ORM\OneToMany(targetEntity="App\Entity\Inscription", mappedBy="participant")
      */
     private $inscriptions;
@@ -283,6 +284,14 @@ class User implements UserInterface
         return $this;
     }
 
-  
+  public function isInscrit(Sortie $sortie): bool
+  {
+      foreach ($this->inscriptions as $inscription) {
+          if ($sortie == $inscription->getSortie()) {
+              return true;
+          }
+      }
+      return false;
+  }
 
 }

@@ -50,13 +50,11 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/subscribe/{id}", name="subscribe")
+     * @Route("/subscribe/{id}", name="subscribe", methods={"POST"})
      *
      */
     public function subscribe($id, EntityManagerInterface $em)
     {
-        $sorties = $em->getRepository(Sortie::class)->findIfNotArchived();
-        $sites = $em->getRepository(Site::class)->findAll();
         $dateDuJour = new \DateTime();
         $inscription = new Inscription();
 
@@ -64,60 +62,43 @@ class SortieController extends AbstractController
         $user = $this->getUser();
         $userId = $user->getId();
 
-        $etatCloture = $em->getRepository(Sortie::class)->find(3);
-
 //        Si la sortie est ouverte, que le nb max d'inscriptions n'est pas atteint,
 //          que je ne suis pas déjà inscrit,
 //          et que la date de cloture des inscriptions n'est pas dépassée :
-        if ($sortie->getEtat()->getId() == 2
-            and $sortie->getInscriptions()->count() < $sortie->getNbInscriptionsMax()
-            and !$sortie->getInscriptions()->contains($userId)
-            and $sortie->getDateCloture() > $dateDuJour) {
+        if (
+            $sortie->getEtat()->getLibelle() == Etat::OUVERTE &&
+            $sortie->getInscriptions()->count() < $sortie->getNbInscriptionsMax() &&
+            !$sortie->getInscriptions()->contains($userId) &&
+            $sortie->getDateCloture() > $dateDuJour
+        ) {
             $inscription->setSortie($sortie)
                 ->setParticipant($user)
                 ->setDateInscription(new \DateTime());
             $em->persist($inscription);
             $em->flush();
 
-            if ($sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()) {
-//                $sortie->setEtat($etatCloture);
-//                $em->flush();
-            }
-
             $this->addFlash('success', "Inscription validée");
             return $this->redirectToRoute('sortie_list');
         }
 
-        if ($sortie->getEtat()->getId() == 2
-            and $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
+        if ($sortie->getEtat()->getLibelle() == Etat::OUVERTE &&
+            $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax()
         ) {
             $this->addFlash('warning', "Le nombre maximal de participants est atteint");
-            return $this->redirectToRoute('sortie_list');
-        }
-
-        if ($sortie->getEtat()->getId() == 2
-            and $sortie->getInscriptions()->contains($user)
+        } elseif ($sortie->getEtat()->getLibelle() == Etat::OUVERTE &&
+            $sortie->getInscriptions()->contains($user)
         ) {
             $this->addFlash('warning', "Vous êtes déjà inscrit à cette sortie");
-            return $this->redirectToRoute('sortie_list');
         }
 
-        return $this->render('sortie/listSorties.html.twig',
-            [
-                "sorties" => $sorties,
-                "sites" => $sites,
-                "dateJour" => $dateDuJour
-            ]);
+        return $this->redirectToRoute('sortie_list');
     }
 
     /**
-     * @Route("/unsubscribe/{id}", name="unsubscribe")
+     * @Route("/unsubscribe/{id}", name="unsubscribe", methods={"POST"})
      */
     public function unsubscribe($id, EntityManagerInterface $em)
     {
-        $sorties = $em->getRepository(Sortie::class)->findIfNotArchived();
-        $dateDuJour = new \DateTime();
-        $sites = $em->getRepository(Site::class)->findAll();
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $user = $this->getUser();
         $userId = $user->getId();
@@ -135,15 +116,8 @@ class SortieController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Inscription annulée");
-            return $this->redirectToRoute('sortie_list');
         }
 
-        return $this->render('sortie/listSorties.html.twig',
-            [
-                "sorties" => $sorties,
-                "sites" => $sites,
-                "dateJour" => $dateDuJour
-            ]);
-    }
+        return $this->redirectToRoute('sortie_list');    }
 
 }

@@ -33,13 +33,19 @@ footer{
    margin-right: 2% !important;
 }
 
-#username {
+#textcenter {
    text-align: center;
 }
 
+#buttoncenter {
+   display: block;
+   width: fit-content;
+   margin: auto;
+}
 
 #tableparticipants {
-   width: 100%;
+   width: 50%;
+   margin: auto;
 }
 
 table tr {
@@ -49,11 +55,6 @@ table tr {
 #scroll {
    overflow-y:scroll;
 }
-
-/*thead, tbody {*/
-/*   display: block;*/
-/*}*/
-
 
 .filtre {
    margin-top: 1em;
@@ -73,3 +74,11 @@ table tr {
    margin-top: 2em;
 }
 
+#actions {
+   display: flex;
+}
+
+#boutonsActions {
+   margin-left: 2px;
+   margin-right: 2px;
+}

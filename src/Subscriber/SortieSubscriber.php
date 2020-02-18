@@ -24,46 +24,54 @@ class SortieSubscriber implements EventSubscriber
             Events::postUpdate,
         ];
     }
+
     // callback methods must be called exactly like the events they listen to;
     // they receive an argument of type LifecycleEventArgs, which gives you access
     // to both the entity object of the event and the entity manager itself
     public function postPersist(LifecycleEventArgs $args)
     {
-        dump($args->getObject());
         // tester si Sortie persistée
         if ($args->getObject() instanceof Inscription) {
             /** @var Inscription $inscription */
             $inscription = $args->getObject();
-            // tester si changement nombre inscription
-            $em = $args->getObjectManager();
             $sortie = $inscription->getSortie();
-//            $changeSet = $args->getObjectManager()->getUnitOfWork()->getEntityChangeSet($inscription);;
-            if (count($sortie->getInscriptions()) == $sortie->getNbInscriptionsMax()) {
-                $etatCloturee = $em->getRepository(Etat::class)->findOneBy(['libelle' => Etat::CLOTUREE]);
-                $sortie->setEtat($etatCloturee);
-                $em->persist($sortie);
-                $em->flush();
-            }
-        } elseif ($args->getObject() instanceof Sortie) {
-            $changeSet = $args->getObjectManager()->getUnitOfWork()->getEntityChangeSet($inscription);;
-            dump($changeSet);
-            die();
+            $this->setEtat($sortie, $args);
         }
     }
 
     public function postRemove(LifecycleEventArgs $args)
     {
+        if ($args->getObject() instanceof Inscription) {
+            /** @var Inscription $inscription */
+            $inscription = $args->getObject();
+            $sortie = $inscription->getSortie();
+            $this->setEtat($sortie, $args);
+        }
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        dump($args->getObject());
-        die(1);
+    }
 
-        if ($args->getObject() instanceof Sortie) {
-            $changeSet = $args->getObjectManager()->getUnitOfWork()->getEntityChangeSet($inscription);;
-            dump($changeSet);
-            die();
+    private function setEtat(Sortie $sortie, LifecycleEventArgs $args) {
+        $em = $args->getObjectManager();
+        if (
+            $sortie->getInscriptions()->count() == $sortie->getNbInscriptionsMax() &&
+            $sortie->getEtat()->getLibelle() != Etat::CLOTUREE
+        ) {
+            $etatCloturee = $em->getRepository(Etat::class)->findOneBy(['libelle' => Etat::CLOTUREE]);
+            $sortie->setEtat($etatCloturee);
+            $em->persist($sortie);
+            $em->flush();
+        } elseif (
+            $sortie->getInscriptions()->count() < $sortie->getNbInscriptionsMax() &&
+            $sortie->isDesinscrirePossible() &&
+            $sortie->getEtat()->getLibelle() != Etat::OUVERTE
+        ) {
+            $etatOuverte = $em->getRepository(Etat::class)->findOneBy(['libelle' => Etat::OUVERTE]);
+            $sortie->setEtat($etatOuverte);
+            $em->persist($sortie);
+            $em->flush();
         }
     }
 }

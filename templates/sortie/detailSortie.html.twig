@@ -4,53 +4,53 @@
 
 {% block body %}
 
-    <h3 id="username">Détail de la sortie</h3>
+    <h3 id="textcenter">Détail de la sortie</h3>
     <br>
     <dl class="row">
-        <dt class="col-sm-3">Nom : </dt>
-        <dd class="col-sm-9">{{ sortie.nom }}</dd>
+        <dt class="col-sm-3 offset-3">Nom : </dt>
+        <dd class="col-sm-6">{{ sortie.nom }}</dd>
 
-        <dt class="col-sm-3">Date et heure : </dt>
-        <dd class="col-sm-9">{{ sortie.dateSortie | format_datetime(locale='fr') }}</dd>
+        <dt class="col-sm-3 offset-3">Date et heure : </dt>
+        <dd class="col-sm-6">{{ sortie.dateSortie | format_datetime(locale='fr') }}</dd>
 
-        <dt class="col-sm-3">Date limite d'inscription : </dt>
-        <dd class="col-sm-9">{{ sortie.dateCloture | format_datetime(locale='fr') }}</dd>
+        <dt class="col-sm-3 offset-3">Date limite d'inscription : </dt>
+        <dd class="col-sm-6">{{ sortie.dateCloture | format_datetime(locale='fr') }}</dd>
 
-        <dt class="col-sm-3">Nombre de places : </dt>
-        <dd class="col-sm-9">{{ sortie.nbInscriptionsMax }}</dd>
+        <dt class="col-sm-3 offset-3">Nombre de places : </dt>
+        <dd class="col-sm-6">{{ sortie.nbInscriptionsMax }}</dd>
 
-        <dt class="col-sm-3">Durée :</dt>
-        <dd class="col-sm-9">{{ sortie.duree }}</dd>
+        <dt class="col-sm-3 offset-3">Durée :</dt>
+        <dd class="col-sm-6">{{ sortie.duree }}</dd>
 
-        <dt class="col-sm-3">Description et informations :</dt>
-        <dd class="col-sm-9">{{ sortie.descriptionInfos }}</dd>
+        <dt class="col-sm-3 offset-3">Description et informations :</dt>
+        <dd class="col-sm-6">{{ sortie.descriptionInfos }}</dd>
 
-        <dt class="col-sm-3">Lieu :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu }}</dd>
+        <dt class="col-sm-3 offset-3">Lieu :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu }}</dd>
 
-        <dt class="col-sm-3">Rue :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu.rue }}</dd>
+        <dt class="col-sm-3 offset-3">Rue :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu.rue }}</dd>
 
-        <dt class="col-sm-3">Ville :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu.ville.nomVille }}</dd>
+        <dt class="col-sm-3 offset-3">Ville :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu.ville.nomVille }}</dd>
 
-        <dt class="col-sm-3">Code postal :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu.ville.codePostal }}</dd>
+        <dt class="col-sm-3 offset-3">Code postal :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu.ville.codePostal }}</dd>
 
-        <dt class="col-sm-3">Latitude :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu.latitude }}</dd>
+        <dt class="col-sm-3 offset-3">Latitude :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu.latitude }}</dd>
 
-        <dt class="col-sm-3">Longitude :</dt>
-        <dd class="col-sm-9">{{ sortie.lieu.longitude }}</dd>
+        <dt class="col-sm-3 offset-3">Longitude :</dt>
+        <dd class="col-sm-6">{{ sortie.lieu.longitude }}</dd>
     </dl>
 
-    <h5>Participants :</h5>
+    <h5 class="col-sm-3 offset-3">Participants :</h5>
 
     <table class="table table-striped" id="tableparticipants">
         <thead>
         <tr>
-            <th scope="col">Pseudo</th>
-            <th scope="col">Nom</th>
+            <th >Pseudo</th>
+            <th >Nom</th>
         </tr>
         </thead>
         <tbody>
@@ -62,6 +62,28 @@
         {%  endfor %}
         </tbody>
     </table>
+    <br>
+    {% if app.user.isInscrit(sortie) == false
+        and sortie.isInscrirePossible() %}
+        <form action="{{ path('sortie_subscribe', {'id':sortie.id}) }}" method="post">
+            <button id="buttoncenter" type="submit">
+                <img src="{{ asset('img/icons8-add-user-male-16.png') }}">
+                S'inscrire
+            </button>
+        </form>
+    {% endif %}
+
+    {% if app.user.isInscrit(sortie)
+        and sortie.isDesinscrirePossible() %}
+        <form action="{{ path('sortie_unsubscribe', {'id':sortie.id}) }}" method="post">
+            <button id="buttoncenter" type="submit">
+                <img src="{{ asset("img/icons8-supprimer-l'utilisateur-homme-16.png") }}">
+                Se désinscrire
+            </button>
+        </form>
+    {% endif %}
+    <br>
+    <a id="buttoncenter" class="btn btn-primary" href="{{ path('sortie_list') }}">Retour</a>
 
 
 {% endblock %}

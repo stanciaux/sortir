@@ -4,25 +4,26 @@
 
 {% block body %}
 
-    <h3 id="username">{{ user.pseudo }}</h3>
+    <h3 id="textcenter">{{ user.pseudo }}</h3>
     <br>
+
     <dl class="row">
-        <dt class="col-sm-3">Nom : </dt>
-        <dd class="col-sm-9">{{ user.nom }}</dd>
+        <dt class="col-sm-2 offset-4">Nom : </dt>
+        <dd class="col-sm-6">{{ user.nom }}</dd>
 
-        <dt class="col-sm-3">Prénom : </dt>
-        <dd class="col-sm-9">{{ user.prenom }}</dd>
+        <dt class="col-sm-2 offset-4">Prénom : </dt>
+        <dd class="col-sm-6">{{ user.prenom }}</dd>
 
-        <dt class="col-sm-3">Téléphone : </dt>
-        <dd class="col-sm-9">{{ user.telephone }}</dd>
+        <dt class="col-sm-2 offset-4">Téléphone : </dt>
+        <dd class="col-sm-6">{{ user.telephone }}</dd>
 
-        <dt class="col-sm-3">Email : </dt>
-        <dd class="col-sm-9">{{ user.email }}</dd>
+        <dt class="col-sm-2 offset-4">Email : </dt>
+        <dd class="col-sm-6">{{ user.email }}</dd>
 
-        <dt class="col-sm-3">Site de rattachement</dt>
-        <dd class="col-sm-9">{{ user.site }}</dd>
+        <dt class="col-sm-2 offset-4">Site de rattachement :</dt>
+        <dd class="col-sm-6">{{ user.site }}</dd>
     </dl>
 
-    <a class="btn btn-primary" href="{{ path('sortie_list') }}">Retour</a>
+    <a id="buttoncenter" class="btn btn-primary" href="{{ path('sortie_list') }}">Retour</a>
 
 {% endblock %}

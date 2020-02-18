@@ -49,6 +49,9 @@ class Inscription
     public function setSortie(?Sortie $sortie): self
     {
         $this->sortie = $sortie;
+        if ($sortie) {
+            $sortie->addInscription($this);
+        }
 
         return $this;
     }

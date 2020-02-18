@@ -91,45 +91,68 @@
                 <td>
 {#                    ACTIONS POSSIBLES#}
 {#                    SORTIE EN CREA + ORG CONNECTE#}
+                <div id="actions">
                     {% if sortie.etat.id == 1 and sortie.organisateur.id == app.user.id %}
-                        <a href="">Modifier</a>
-                        <a href="{{ path('delete_party', {'id':sortie.id}) }}">Supprimer</a>
-                        <a href="{{ path('publish_party', {'id':sortie.id}) }}">Publier</a>
+                        <form action="" method="post">
+                            <button id="boutonsActions" type="submit" title="Modifier">
+                                <img src="{{ asset('img/icons8-modifier-16.png') }}">
+                            </button>
+                        </form>
+                        <form action="{{ path('delete_party', {'id':sortie.id}) }}" method="post">
+                            <button id="boutonsActions" type="submit" title="Supprimer">
+                                <img src="{{ asset('img/icons8-effacer-16.png') }}">
+                            </button>
+                        </form>
+                        <form action="{{ path('publish_party', {'id':sortie.id}) }}" method="post">
+                            <button id="boutonsActions" type="submit" title="Publier">
+                                <img src="{{ asset('img/icons8-épingle-16.png') }}">
+                            </button>
+                        </form>
+
                     {% endif %}
 
 {#                    SORTIE OUVERTE + ORG CONNECTE#}
                     {% if sortie.etat.id == 2 and sortie.organisateur.id == app.user.id %}
-                        <a href="{{ path('cancel_party', {'id':sortie.id}) }}">Annuler</a>
+                        <form action="{{ path('cancel_party', {'id':sortie.id}) }}" method="post">
+                            <button id="boutonsActions" type="submit" title="Annuler">
+                                <img src="{{ asset('img/icons8-annuler-2-16.png') }}">
+                            </button>
+                        </form>
                     {% endif %}
 
+{#                        INSCRIPTION POSSIBLE #}
+{#                        SI PAS INSCRIT, ETAT OUVERT, NB INSCRIP MAX NON ATTEINT ET DATE CLOTURE NON ATTEINTE #}
+                    {% if app.user.isInscrit(sortie) == false
+                        and sortie.isInscrirePossible() %}
+                             <form action="{{ path('sortie_subscribe', {'id':sortie.id}) }}" method="post">
+                                <button id="boutonsActions" type="submit" title="S'inscrire">
+                                    <img src="{{ asset('img/icons8-add-user-male-16.png') }}">
+                                </button>
+                             </form>
+                    {% endif %}
 
-{#                    VERIF INSCRIPTION #}
-                    {% set participation = false %}
-                        {% for inscription in sortie.inscriptions %}
-                            {% if inscription.participant.id == app.user.id %}
-                                {% set participation = true %}
-                            {% endif %}
-                        {% endfor %}
-{#                              SI PAS INSCRIT, ETAT OUVERT, NB INSCRIP MAX NON ATTEINT ET DATE CLOTURE NON ATTEINTE #}
-                        {% if participation == false
-                            and sortie.etat.id == 2
-                            and sortie.inscriptions.count < sortie.nbInscriptionsMax
-                            and sortie.dateCloture > dateJour %}
-                            <a href="{{ path('sortie_subscribe', {'id':sortie.id}) }}">S'inscrire</a>
-                        {% endif %}
-{#                              SI INSCRIT, DATE CLOTURE NON ATTEINTE, ET ETAT OUVERT OU CLOTURE #}
-                        {% if participation == true
-                            and sortie.dateCloture > dateJour
-                            and sortie.etat.id == 2 or sortie.etat.id == 3 %}
-                            <a href="{{ path('sortie_unsubscribe', {'id':sortie.id}) }}">Se désinscrire</a>
+{#                        DESINSCRIPTION POSSIBLE #}
+{#                         SI INSCRIT, DATE CLOTURE NON ATTEINTE, ET ETAT OUVERT OU CLOTURE #}
+                        {% if app.user.isInscrit(sortie)
+                            and sortie.isDesinscrirePossible() %}
+                            <form action="{{ path('sortie_unsubscribe', {'id':sortie.id}) }}" method="post">
+                                <button id="boutonsActions" type="submit" title="Se désinscrire">
+                                    <img src="{{ asset("img/icons8-supprimer-l'utilisateur-homme-16.png") }}">
+                                </button>
+                            </form>
                         {% endif %}
 
+{#                    ARCHIVAGE POSSIBLE #}
 {#                    SI ADMIN #}
                     {% if is_granted('ROLE_ADMIN')
-                        and date(sortie.dateSortie) < date('-30days')
-                        and sortie.etat != (sortie.etat.id == 7) %}
-                        <a href="{{ path('archive_party', {'id':sortie.id}) }}">Archiver</a>
+                        and sortie.isArchivagePossible() %}
+                        <form action="{{ path('archive_party', {'id':sortie.id}) }}" method="post">
+                            <button id="boutonsActions" type="submit" title="Archiver">
+                                <img src="{{ asset("img/icons8-archive-16.png") }}">
+                            </button>
+                        </form>
                     {% endif %}
+                </div>
                 </td>
             </tr>
         {% endfor %}

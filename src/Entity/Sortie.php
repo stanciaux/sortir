@@ -55,14 +55,15 @@ class Sortie
     private $site;
 
     /**
+     * @var Etat
      * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", cascade={"persist", "remove"},inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $lieu;
 
@@ -255,7 +256,8 @@ class Sortie
             $this->inscriptions->removeElement($inscription);
             // set the owning side to null (unless already changed)
             if ($inscription->getSortie() === $this) {
-                $inscription->setSortie(null);
+                // ne pas mettre la sortie de inscription à null sinon le subscriber ne fonctionnera plus
+//                $inscription->setSortie(null);
             }
         }
 
@@ -272,6 +274,45 @@ class Sortie
         $this->motifAnnulation = $motifAnnulation;
 
         return $this;
+    }
+
+    public function isDesinscrirePossible(): bool
+    {
+        if (
+            $this->dateCloture >= new \DateTime() &&
+            (
+                $this->etat->getLibelle() == Etat::OUVERTE ||
+                $this->etat->getLibelle() == Etat::CLOTUREE
+            )
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isInscrirePossible(): bool
+    {
+        if (
+            $this->etat->getLibelle() == Etat::OUVERTE &&
+            $this->inscriptions->count() < $this->nbInscriptionsMax &&
+            $this->dateCloture > new \DateTime()
+        ){
+            return true;
+        }
+        return false;
+    }
+
+    public function isArchivagePossible(): bool
+    {
+        $dateJour = new \DateTime();
+        $interval = $dateJour->diff($this->dateSortie);
+        if (
+            $interval->days > 30 &&
+            $this->etat->getLibelle() != Etat::ARCHIVEE
+        ){
+            return true;
+        }
+        return false;
     }
 
 

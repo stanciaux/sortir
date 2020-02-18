@@ -132,18 +132,18 @@ class OrganizerController extends AbstractController
     }
 
     /**
-     * @Route("/archiveParty/{id}", name="archive_party")
+     * @Route("/archiveParty/{id}", name="archive_party", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function archive($id, EntityManagerInterface $em)
     {
         $etatArchive = $em->getRepository(Etat::class)->find(7);
         $sortieAarchiver = $em->getRepository(Sortie::class)->find($id);
-        $dateSortie = $sortieAarchiver->getDateSortie();
-        $dateJour = new \DateTime();
-        $interval = $dateJour->diff($dateSortie);
+//        $dateSortie = $sortieAarchiver->getDateSortie();
+//        $dateJour = new \DateTime();
+//        $interval = $dateJour->diff($dateSortie);
 
-        if ($interval->days > 30)
+        if ($sortieAarchiver->isArchivagePossible())
         {
             $sortieAarchiver->setEtat($etatArchive);
             $em->flush();
@@ -156,11 +156,11 @@ class OrganizerController extends AbstractController
             return $this->redirectToRoute('sortie_list');
         }
 
-        return $this->render('sortie_list');
+        return $this->redirectToRoute('sortie_list');
     }
 
     /**
-     * @Route("/publishParty/{id}", name="publish_party")
+     * @Route("/publishParty/{id}", name="publish_party", methods={"POST"})
      */
     public function publish($id, EntityManagerInterface $em)
     {
@@ -180,16 +180,16 @@ class OrganizerController extends AbstractController
             return $this->redirectToRoute('sortie_list');
         }
 
-        return $this->render('sortie_list');
+        return $this->redirectToRoute('sortie_list');
     }
 
     /**
-     * @Route("/cancelParty/{id}", name="cancel_party")
+     * @Route("/cancelParty/{id}", name="cancel_party", methods={"POST"})
      */
     public function cancel($id, EntityManagerInterface $em, Request $request)
     {
-        $sorties = $em->getRepository(Sortie::class)->findAll();
-        $sites = $em->getRepository(Site::class)->findAll();
+//        $sorties = $em->getRepository(Sortie::class)->findAll();
+//        $sites = $em->getRepository(Site::class)->findAll();
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $organisateur = $sortie->getOrganisateur();
@@ -210,11 +210,12 @@ class OrganizerController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', "Sortie annulée");
-            return $this->redirectToRoute('sortie_list',
-                [
-                    "sorties" => $sorties,
-                    "sites" => $sites
-                ]);
+            return $this->redirectToRoute('sortie_list');
+//            return $this->redirectToRoute('sortie_list',
+//                [
+//                    "sorties" => $sorties,
+//                    "sites" => $sites
+//                ]);
         }
 
         return $this->render('sortie/cancelParty.html.twig',
@@ -225,7 +226,7 @@ class OrganizerController extends AbstractController
     }
 
     /**
-     * @Route("/deleteParty/{id}", name="delete_party")
+     * @Route("/deleteParty/{id}", name="delete_party", methods={"POST"})
      */
     public function delete($id, EntityManagerInterface $em)
     {
@@ -243,7 +244,7 @@ class OrganizerController extends AbstractController
             $this->addFlash('warning', "Cette sortie n'existe pas");
             return $this->redirectToRoute('sortie_list');
         }
-        return $this->render('sortie_list');
+        return $this->redirectToRoute('sortie_list');
     }
 
 }

@@ -6,15 +6,17 @@
 
 {% block body %}
     <br>
+    <h3 id="textcenter">Modifier mon profil</h3>
+    <br>
 <div class="row">
+
     <div class="col-8 offset-2">
     {{ form_start(userUpdateForm) }}
     {{ form_widget(userUpdateForm) }}<button type="submit">Enregistrer</button>
     {{ form_end(userUpdateForm) }}
-
-        <a class="btn btn-primary" href="{{ path('sortie_list') }}">Annuler</a>
-
+    <a class="btn btn-primary" href="{{ path('sortie_list') }}">Annuler</a>
     </div>
+
 </div>
 
 
