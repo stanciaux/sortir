@@ -246,7 +246,7 @@ class OrganizerController extends AbstractController
     /**
      * @Route("/lieu", name="lieu")
      */
-    public function index(Request $request)
+    public function addLieu(Request $request)
     {
         $lieu = new Lieu();
         $lieuForm = $this->createForm(LieuType::class, $lieu);

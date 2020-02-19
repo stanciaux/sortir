@@ -51,6 +51,11 @@ class User implements UserInterface
     private $pseudo;
 
     /**
+     *@ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="users", cascade={"persist"})
      */
     private $site;
@@ -292,6 +297,18 @@ class User implements UserInterface
           }
       }
       return false;
+  }
+
+  public function getPhoto(): ?string
+  {
+      return $this->photo;
+  }
+
+  public function setPhoto(?string $photo): self
+  {
+      $this->photo = $photo;
+
+      return $this;
   }
 
 }
