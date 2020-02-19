@@ -34,11 +34,11 @@ class OrganizerController extends AbstractController
         // On crée les formulaire grâce à OrganizerType et LieuType
         // Et on récupère les requêtes avec le handleRequest
         $formLieu = $this->createForm(LieuType::class, $lieu);
-        $formLieu->handleRequest($request);
+//        $formLieu->handleRequest($request);
         $form = $this->createForm(OrganizerType::class, $sortie);
         $form->handleRequest($request);
         dump($sortie);
-//        die();
+
 
         //On récupére toute la liste de la class Ville
         $listVille = $em->getRepository(Ville::class)->findAll();
@@ -78,6 +78,7 @@ class OrganizerController extends AbstractController
 
             $sortie->setOrganisateur($this->getUser());
 
+            // On enregistre notre objet $sortie dans la base de données
             $em->persist($sortie);
             $em->flush();
             $this->addFlash('success', 'La sortie a été ajoutée !');
@@ -240,5 +241,22 @@ class OrganizerController extends AbstractController
             return $this->redirectToRoute('sortie_list');
         }
         return $this->redirectToRoute('sortie_list');
+    }
+
+    /**
+     * @Route("/lieu", name="lieu")
+     */
+    public function index(Request $request)
+    {
+        $lieu = new Lieu();
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $lieuForm->handleRequest($request);
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($lieu);
+            $em->flush();
+            return $this->redirectToRoute('createsortie');
+        }
+        return $this->render('organizer/lieu.html.twig', ['lieuForm' => $lieuForm->createView()]);
     }
 }

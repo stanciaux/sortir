@@ -29,7 +29,7 @@ class Sortie
     private $duree;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $dateCloture;
 
@@ -80,14 +80,12 @@ class Sortie
     private $inscriptions;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $dateSortie;
 
     /**
-     * @ORM\Column(type="text")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $motifAnnulation;
 
