@@ -25,17 +25,19 @@ class OrganizerType extends AbstractType
             ->add('nom', TextType::class)
             ->add('dateSortie', DateTimeType::class, [
                 'label' => 'Date de la sortie',
-                'years' => range(2019,2050),
+                'widget' => 'single_text',
+                'years' => range(2020,2050),
                 'required' => true,
             ])
             ->add('duree', IntegerType::class)
-            ->add('dateCloture', DateTimeType::class, [
+            ->add('dateCloture', DateType::class, [
                 'label' => 'Date Cloture inscription',
-                'years' => range(2019,2050),
+                'widget' => 'single_text',
+                'years' => range(2020,2050),
                 'required' => true,
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'label' => 'Nombre d\'inscription maximum'
+                'label' => 'Nombre d\'inscriptions maximum'
             ])
             ->add('descriptionInfos', TextareaType::class, [
                 'label' => 'Description'

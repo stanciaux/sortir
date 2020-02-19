@@ -21,39 +21,40 @@ class SortieController extends AbstractController
 {
     /**
      * @Route("/list", name="list")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function partyList(EntityManagerInterface $em, Request $request)
     {
-
         $sorties = $em->getRepository(Sortie::class)->findIfNotArchived();
-
-//        $filtreForm = $this->createForm(FiltreType::class);
-
-        $parametres = [
-            'site' => $request->get('site'),
-            'search' => $request->get('search'),
-            'dateDebut' => $request->get('dateDebut'),
-            'dateFin' => $request->get('dateFin'),
-            'organisateur' => $request->get('organisateur'),
-            'inscrit' => $request->get('inscrit'),
-            'nonInscrit' => $request->get('nonInscrit'),
-            'sortiesPassees' => $request->get('sortiesPassees'),
-            'user' => $this->getUser(),
-            'userId' => $this->getUser()->getId(),
-        ];
-
-
-
-
-        $sorties = $em->getRepository(Sortie::class)->recherche($parametres);
-
         $sites = $em->getRepository(Site::class)->findAll();
         $dateDuJour = new \DateTime();
 
-        return $this->render(
-            'sortie/listSorties.html.twig',
+        $search = $request->get('rechercher');
+
+         if ($search){
+             $parametres = [
+             'site' => $request->get('site'),
+             'search' => $request->get('search'),
+             'dateDebut' => $request->get('dateDebut'),
+             'dateFin' => $request->get('dateFin'),
+             'organisateur' => $request->get('organisateur'),
+             'inscrit' => $request->get('inscrit'),
+             'nonInscrit' => $request->get('nonInscrit'),
+             'sortiesPassees' => $request->get('sortiesPassees'),
+             'user' => $this->getUser(),
+             'userId' => $this->getUser()->getId(),
+         ];
+             $sortiesRech = $em->getRepository(Sortie::class)->recherche($parametres);
+             return $this->render('sortie/listSorties.html.twig',
+                 [
+                     "sorties" => $sortiesRech,
+                     "sites" => $sites,
+                     "dateJour" => $dateDuJour
+                 ]);
+          }
+
+        return $this->render('sortie/listSorties.html.twig',
             [
-//                "filtreForm" => $filtreForm->createView(),
                 "sorties" => $sorties,
                 "sites" => $sites,
                 "dateJour" => $dateDuJour
@@ -63,6 +64,7 @@ class SortieController extends AbstractController
 
     /**
      * @Route("/detail/{id}", name="detail")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function detail($id, EntityManagerInterface $em)
     {
@@ -75,26 +77,17 @@ class SortieController extends AbstractController
 
     /**
      * @Route("/subscribe/{id}", name="subscribe", methods={"POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      */
     public function subscribe($id, EntityManagerInterface $em)
     {
-        $dateDuJour = new \DateTime();
         $inscription = new Inscription();
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $user = $this->getUser();
-        $userId = $user->getId();
 
-//        Si la sortie est ouverte, que le nb max d'inscriptions n'est pas atteint,
-//          que je ne suis pas déjà inscrit,
-//          et que la date de cloture des inscriptions n'est pas dépassée :
-        if (
-            $sortie->getEtat()->getLibelle() == Etat::OUVERTE &&
-            $sortie->getInscriptions()->count() < $sortie->getNbInscriptionsMax() &&
-            !$sortie->getInscriptions()->contains($userId) &&
-            $sortie->getDateCloture() > $dateDuJour
-        ) {
+        if ($sortie->isInscrirePossible($user)) {
             $inscription->setSortie($sortie)
                 ->setParticipant($user)
                 ->setDateInscription(new \DateTime());
@@ -122,6 +115,7 @@ class SortieController extends AbstractController
 
     /**
      * @Route("/unsubscribe/{id}", name="unsubscribe", methods={"POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function unsubscribe($id, EntityManagerInterface $em)
     {
@@ -133,10 +127,7 @@ class SortieController extends AbstractController
             ->findOneBy(["sortie" => $id,
                 "participant" => $userId]);
 
-        if (
-            $sortie->getEtat()->getLibelle() == Etat::OUVERTE ||
-            $sortie->getEtat()->getLibelle() == Etat::CLOTUREE
-        ) {
+        if ($sortie->isDesinscrirePossible()) {
             $sortie->removeInscription($inscription);
             $em->persist($sortie);
             $em->flush();

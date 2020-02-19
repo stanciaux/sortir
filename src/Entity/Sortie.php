@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -290,30 +292,88 @@ class Sortie
         return false;
     }
 
-    public function isInscrirePossible(): bool
+    public function isInscrirePossible(User $user): bool
     {
-        if (
-            $this->etat->getLibelle() == Etat::OUVERTE &&
-            $this->inscriptions->count() < $this->nbInscriptionsMax &&
-            $this->dateCloture > new \DateTime()
-        ){
-            return true;
+        if ($this->etat->getLibelle() != Etat::OUVERTE) {
+            return false;
         }
-        return false;
+
+        if ($this->inscriptions->count() >= $this->nbInscriptionsMax) {
+            return false;
+        }
+
+        if ($this->dateCloture < new \DateTime()){
+            return false;
+        }
+//        mon utilisateur est inscrit à cette sortie
+        if ($this->getInscriptions()->contains($user)){
+            return false;
+        }
+
+        return true;
     }
 
-    public function isArchivagePossible(): bool
+    public function isArchivagePossible(User $user): bool
     {
         $dateJour = new \DateTime();
         $interval = $dateJour->diff($this->dateSortie);
-        if (
-            $interval->days > 30 &&
-            $this->etat->getLibelle() != Etat::ARCHIVEE
-        ){
-            return true;
+        if ($interval->days < 30) {
+            return false;
         }
-        return false;
+        if ($this->etat->getLibelle() == Etat::ARCHIVEE){
+            return false;
+        }
+        if (! in_array("ROLE_ADMIN", $user->getRoles())){
+            return false;
+        }
+        return true;
     }
 
+    public function isAnnulable(User $user): bool
+    {
+        if ($this->etat->getLibelle() != Etat::OUVERTE) {
+            return false;
+        }
+        if (
+            $this->getOrganisateur()->getId() != $user->getId() &&
+            ! in_array("ROLE_ADMIN", $user->getRoles())
+        ) {
+            return false;
+        }
+        return true;
+    }
+
+    public function isModifiable(User $user)
+    {
+        if ($this->etat->getLibelle() != Etat::CREEE){
+            return false;
+        }
+        if ($this->getOrganisateur()->getId() != $user->getId()){
+            return false;
+        }
+        return true;
+    }
+
+    public function isSupprimable(User $user)
+    {
+        if ($this->etat->getLibelle() != Etat::CREEE){
+            return false;
+        }
+        if ($this->getOrganisateur()->getId() != $user->getId()){
+            return false;
+        }
+        return true;
+    }
+
+    public function isPubliable(User $user)
+    {
+        if ($this->etat->getLibelle() != Etat::CREEE){
+            return false;
+        }
+        if ($this->getOrganisateur()->getId() != $user->getId()){
+            return false;
+        }
+        return true;
+    }
 
 }
