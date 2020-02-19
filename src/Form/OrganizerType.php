@@ -22,38 +22,43 @@ class OrganizerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', TextType::class)
+            ->add('nom', TextType::class, [
+                'label' => 'Nom de la sortie :',
+            ])
             ->add('dateSortie', DateTimeType::class, [
-                'label' => 'Date de la sortie',
-                'years' => range(2019,2050),
+                'label' => 'Date et heure de la sortie :',
+                'years' => range(2020,2050),
                 'required' => true,
             ])
-            ->add('duree', IntegerType::class)
-            ->add('dateCloture', DateTimeType::class, [
-                'label' => 'Date Cloture inscription',
-                'years' => range(2019,2050),
+            ->add('duree', IntegerType::class, [
+                'label' => 'Durée :'
+            ])
+            ->add('dateCloture', DateType::class, [
+                'label' => 'Date limite d\'inscription :',
+                'years' => range(2020,2050),
                 'required' => true,
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'label' => 'Nombre d\'inscription maximum'
+                'label' => 'Nombre de places :',
             ])
             ->add('descriptionInfos', TextareaType::class, [
-                'label' => 'Description'
+                'label' => 'Description et infos :'
             ])
             ->add('lieu', EntityType::class, [
+                'label' => 'Lieu :',
                 'class' => Lieu::class,
                 'choice_label' => 'nom_lieu',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('c')->orderBy('c.nomLieu', 'ASC');
                 }
             ])
-//            ->add('site', EntityType::class, [
-//                'class' => Site::class,
-//                'choice_label' => 'nom',
-//                'query_builder' => function (EntityRepository $repository) {
-//                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
-//                }
-//            ])
+            ->add('site', EntityType::class, [
+                'class' => Site::class,
+                'choice_label' => 'nom',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
+                }
+            ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
@@ -74,6 +79,7 @@ class OrganizerType extends AbstractType
             ]);
 
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

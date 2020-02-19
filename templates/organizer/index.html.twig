@@ -10,68 +10,68 @@
         <div class="form-row form-group row nom">
             <div class="form-group col-sm-6">
                 <div class="row">
-                    <div class="col-6"><p>Nom de la sortie :</p></div>
-                    <div class="col-6">{{ form(form.nom) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.nom) }}</p></div>
+                    <div class="col-6">{{ form_widget(form.nom) }}</div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6"><p>Date et heure de la sortie :</p></div>
-                    <div class="col-6">{{ form(form.dateSortie) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.dateSortie) }}</p></div>
+                    <div class="col-6">{{ form_widget(form.dateSortie) }}</div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6"><p>Date limite d'inscription :</p></div>
-                    <div class="col-6">{{ form(form.dateCloture) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.dateCloture) }}</p></div>
+                    <div class="col-6">{{ form_widget(form.dateCloture) }}</div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6"><p>Nombre de places :</p></div>
-                    <div class="col-3">{{ form(form.nbInscriptionsMax) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.nbInscriptionsMax) }}</p></div>
+                    <div class="col-3">{{ form_widget(form.nbInscriptionsMax) }}</div>
                     <div class="col-3"><p></p></div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6"><p>Durée :</p></div>
-                    <div class="col-2">{{ form(form.duree) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.duree) }}</p></div>
+                    <div class="col-2">{{ form_widget(form.duree) }}</div>
                     <div class="col-4"><p></p> minutes</div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6"><p>Description et infos :</p></div>
-                    <div class="col-6">{{ form(form.descriptionInfos) }}</div>
+                    <div class="col-6"><p>{{ form_label(form.descriptionInfos) }}</p></div>
+                    <div class="col-6">{{ form_widget(form.descriptionInfos) }}</div>
                 </div>
             </div>
             <div class="form-group col-sm-6">
                 <div class="row">
-                    <div class="col-4"><p>Lieu :</p></div>
+                    <div class="col-4"><p>{{ form_label(form.lieu) }}</p></div>
                     <div class="col-4">{{ form(form.lieu) }}</div>
-                    {#TODO insérer le lien vers la page "ajouter lieu"#}
-                    {#                        <a href="{{ path('') }}">#}
 
-                    <img src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"/>
-{#                    </a>#}
-{#                    </button>#}
+                    <a href="{{ path('lieu') }}">
+
+                        <img src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"/>
+                    </a>
+                    </button>
                 </div>
-                {#                <div class="row">#}
-                {#                    <div class="col-6"><p>Ville :</p></div>#}
-                {#                    <div class="col-6">{{ form(formLieu.ville) }}</div>#}
-                {#                </div>#}
-                {#                <div class="row">#}
-                {#                    <div class="col-6"><p>Rue :</p></div>#}
-                {#                    <div class="col-6">{{ form(formLieu.rue) }}</div>#}
-                {#                #}{#                </div>#}
+                {#                                <div class="row">#}
+                {#                                    <div class="col-6"><p>Ville :</p></div>#}
+                {#                                    <div class="col-6">{{ form(formLieu.ville) }}</div>#}
+                {#                                </div>#}
+                {#                                <div class="row">#}
+                {#                                    <div class="col-6"><p>Rue :</p></div>#}
+                {#                                    <div class="col-6">{{ form(formLieu.rue) }}</div>#}
+                {#                                                </div>#}
 
-                {#            <div class="form-group">#}
-                {#                <label for="selectVilleLieu">Ville</label>#}
-                {#                <select class="form-control" id="selectVilleLieu">#}
-                {#                    {% for ville in listVille %}#}
-                {#                        <div class="col-8"><p>Ville :</p></div>#}
-                {#                        <div class="col-4"><option>{{ ville.nomVille }}</option></p></div>#}
-                {#                    {% endfor %}#}
-                {#                </select>#}
-                {#            </div>#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="selectVilleLieu">Ville</label>#}
+                {#                                <select class="form-control" id="selectVilleLieu">#}
+                {#                                    {% for ville in listVille %}#}
+                {#                                        <div class="col-8"><p>Ville :</p></div>#}
+                {#                                        <div class="col-4"><option>{{ ville.nomVille }}</option></p></div>#}
+                {#                                    {% endfor %}#}
+                {#                                </select>#}
+                {#                            </div>#}
 
-    {{ form_end(form) }}
+                {{ form_end(form) }}
                 <div class="modal-body">
 
 
@@ -79,7 +79,7 @@
                         <div class="col-6"><p>Ville :</p></div>
 
                         <select class="col-6" id="selectVilleLieu">
-                            {% for ville in listVille %}#}
+                            {% for ville in listVille %}
                                 <option>{{ ville.nomVille }}</option>
                             {% endfor %}
                         </select>
