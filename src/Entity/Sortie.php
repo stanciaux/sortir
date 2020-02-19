@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SortieRepository")
@@ -41,6 +42,7 @@ class Sortie
     private $nbInscriptionsMax;
 
     /**
+     * @Assert\IsNull()
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $descriptionInfos;
@@ -82,6 +84,7 @@ class Sortie
     private $inscriptions;
 
     /**
+     * @Assert\GreaterThan("today", message="La date de la sortie doit être supérieure à la date du jour")
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $dateSortie;

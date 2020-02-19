@@ -96,7 +96,7 @@
 {#                    SORTIE EN CREA + ORG CONNECTE#}
                 <div id="actions">
                     {% if sortie.isModifiable(app.user) %}
-                        <form action="" method="post">
+                        <form action="{{ path('update_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Modifier">
                                 <img src="{{ asset('img/icons8-modifier-16.png') }}">
                             </button>

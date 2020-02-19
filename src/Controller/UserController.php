@@ -27,13 +27,15 @@ class UserController extends AbstractController
         $userUpdateForm->handleRequest($request);
         if ($userUpdateForm->isSubmitted() && $userUpdateForm->isValid())
         {
-            if ($user->getPseudo())
+            if ($user->getPseudo()){
             $hash = $pwdEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $em->flush();
+            }
+            $em->flush();
 
             $this->addFlash('success', "Votre profil a été modifié");
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sortie_list');
         }
 
         return $this->render('user/updateprofile.html.twig', [

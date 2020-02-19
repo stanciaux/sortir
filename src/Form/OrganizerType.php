@@ -32,7 +32,8 @@ class OrganizerType extends AbstractType
                 'required' => true,
             ])
             ->add('duree', IntegerType::class, [
-                'label' => 'Durée :'
+                'label' => 'Durée :',
+                'required' => true
             ])
             ->add('dateCloture', DateType::class, [
                 'label' => 'Date limite d\'inscription :',
@@ -42,13 +43,16 @@ class OrganizerType extends AbstractType
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de places :',
+                'required' => true,
             ])
             ->add('descriptionInfos', TextareaType::class, [
-                'label' => 'Description et infos :'
+                'label' => 'Description et infos :',
+                'required' => false
             ])
             ->add('lieu', EntityType::class, [
                 'label' => 'Lieu :',
                 'class' => Lieu::class,
+                'required' => true,
                 'choice_label' => 'nom_lieu',
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('c')->orderBy('c.nomLieu', 'ASC');
@@ -57,6 +61,7 @@ class OrganizerType extends AbstractType
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nom',
+                'required' => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('c')->orderBy('c.nom', 'ASC');
                 }
@@ -80,7 +85,7 @@ class OrganizerType extends AbstractType
                 ]
             ]);
     }
-    
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

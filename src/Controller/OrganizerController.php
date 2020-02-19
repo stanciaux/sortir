@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Form\AnnulationType;
 use App\Form\LieuType;
 use App\Form\OrganizerType;
 use App\Entity\Site;
@@ -96,44 +97,27 @@ class OrganizerController extends AbstractController
                 'listVille' => $listVille
 
             ]);
-
     }
 
     /**
-     * @Route("/updateParty/{id}", name="updateParty")
+     * @Route("/updateParty/{id}", name="update_party")
      */
-    public function updateParty(Sortie $sortie, Request $request, EntityManagerInterface $em)
+    public function updateParty($id, Request $request, EntityManagerInterface $em)
     {
-
-//        $form = $this->createForm(SortieType::class, $sortie);
-//        $form->handleRequest($request);
-//
-//        $etatSortie = $em->getRepository(Etat::class)->find(1);
-//        if($form->isSubmitted() && $form->isValid()){
-//            $sortie = $form->getData();
-//
-//            if( $form->get('save')->isClicked()){
-//                $sortie->setEtatSortie("En création");
-//            }elseif( $form->get('publish')->isClicked()){
-//                $sortie->setEtatSortie("Ouvert");
-//            }else{
-//                return $this->redirectToRoute('sorties');
-//            }
-//
-//            $em->persist($sortie);
-//            $em->flush();
-//            $this->addFlash('success', 'La sortie a été modifiée !');
-//
-//            $this->sortiesListe = $em->getRepository(Sortie::class)->findAll();
-//
-//            return $this->redirectToRoute('sortieslist');
-//        }
-//
-//        return $this->render('sortie/listSorties.html.twig', [
-//            'page_name' => 'Sortie mise à jour',
-//            'sortie' => $sortie,
-//            'form' => $form->createView()
-//        ]);
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+        $form = $this->createForm(SortieType::class, $sortie);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash('success', "La sortie a été modifiée");
+            return $this->redirectToRoute('sortie_detail', ['id'=>$id]);
+        }
+        return $this->render('sortie/updateParty.html.twig',
+            [
+                "form" => $form->createView()
+            ]);
     }
 
     /**
@@ -144,9 +128,6 @@ class OrganizerController extends AbstractController
     {
         $etatArchive = $em->getRepository(Etat::class)->find(7);
         $sortieAarchiver = $em->getRepository(Sortie::class)->find($id);
-//        $dateSortie = $sortieAarchiver->getDateSortie();
-//        $dateJour = new \DateTime();
-//        $interval = $dateJour->diff($dateSortie);
 
         if ($sortieAarchiver->isArchivagePossible($this->getUser())) {
             $sortieAarchiver->setEtat($etatArchive);
@@ -193,7 +174,7 @@ class OrganizerController extends AbstractController
         $sortie = $em->getRepository(Sortie::class)->find($id);
         $etatAnnule = $em->getRepository(Etat::class)->find(6);
 
-        $formAnnulation = $this->createForm(SortieType::class, $sortie);
+        $formAnnulation = $this->createForm(AnnulationType::class, $sortie);
         $formAnnulation->handleRequest($request);
 
         if ($formAnnulation->isSubmitted() && $formAnnulation->isValid()

@@ -6,6 +6,12 @@
 
     <h3 id="textcenter">Détail de la sortie</h3>
     <br>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+    <br>
     <dl class="row">
         <dt class="col-sm-3 offset-3">Nom : </dt>
         <dd class="col-sm-6">{{ sortie.nom }}</dd>
@@ -64,7 +70,7 @@
     </table>
     <br>
     {% if app.user.isInscrit(sortie) == false
-        and sortie.isInscrirePossible() %}
+        and sortie.isInscrirePossible(app.user) %}
         <form action="{{ path('sortie_subscribe', {'id':sortie.id}) }}" method="post">
             <button id="buttoncenter" type="submit">
                 <img src="{{ asset('img/icons8-add-user-male-16.png') }}">
