@@ -53,6 +53,7 @@ class OrganizerType extends AbstractType
                 }
             ])
             ->add('site', EntityType::class, [
+                'label' => "Site :",
                 'class' => Site::class,
                 'choice_label' => 'nom',
                 'query_builder' => function (EntityRepository $repository) {

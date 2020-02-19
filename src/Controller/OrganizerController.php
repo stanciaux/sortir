@@ -72,8 +72,7 @@ class OrganizerController extends AbstractController
             } elseif ($form->get('publish')->isClicked()) {
                 $sortie->setEtat($etatOuvert);
             } else {
-                //TODO changer la route 'organizer' par la page affichant la récap de la saisie
-                return $this->redirectToRoute('organizer');
+                return $this->redirectToRoute('sortie_list');
             }
 
             $sortie->setOrganisateur($this->getUser());
@@ -82,12 +81,11 @@ class OrganizerController extends AbstractController
             $em->persist($sortie);
             $em->flush();
             $this->addFlash('success', 'La sortie a été ajoutée !');
-            //TODO changer la route 'organizer' par la page affichant la récap de la saisie
-            return $this->redirectToRoute('organizer');
+            return $this->redirectToRoute('sortie_list');
         }
 
 
-        return $this->render('organizer/index.html.twig'
+        return $this->render('organizer/newParty.html.twig'
             , [
                 'page_name' => 'Créer une sortie',
                 'form' => $form->createView(),
@@ -125,11 +123,11 @@ class OrganizerController extends AbstractController
 //
 //            $this->sortiesListe = $em->getRepository(Sortie::class)->findAll();
 //
-//            return $this->redirectToRoute('sortieslist');
+//            return $this->redirectToRoute('sortie_list');
 //        }
 //
-//        return $this->render('sortie/listSorties.html.twig', [
-//            'page_name' => 'Sortie mise à jour',
+//        return $this->render('organizer/updateParty.html.twig', [
+//            'page_name' => 'Modifier une sortie',
 //            'sortie' => $sortie,
 //            'form' => $form->createView()
 //        ]);
@@ -243,20 +241,4 @@ class OrganizerController extends AbstractController
         return $this->redirectToRoute('sortie_list');
     }
 
-    /**
-     * @Route("/lieu", name="lieu")
-     */
-    public function index(Request $request)
-    {
-        $lieu = new Lieu();
-        $lieuForm = $this->createForm(LieuType::class, $lieu);
-        $lieuForm->handleRequest($request);
-        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($lieu);
-            $em->flush();
-            return $this->redirectToRoute('createsortie');
-        }
-        return $this->render('organizer/lieu.html.twig', ['lieuForm' => $lieuForm->createView()]);
-    }
 }
