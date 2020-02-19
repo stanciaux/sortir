@@ -27,6 +27,7 @@ class OrganizerType extends AbstractType
             ])
             ->add('dateSortie', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie :',
+                'widget' => 'single_text',
                 'years' => range(2020,2050),
                 'required' => true,
             ])
@@ -35,6 +36,7 @@ class OrganizerType extends AbstractType
             ])
             ->add('dateCloture', DateType::class, [
                 'label' => 'Date limite d\'inscription :',
+                'widget' => 'single_text',
                 'years' => range(2020,2050),
                 'required' => true,
             ])
@@ -77,10 +79,8 @@ class OrganizerType extends AbstractType
                     'class' => 'btn btn-dark submit'
                 ]
             ]);
-
     }
-
-
+    
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

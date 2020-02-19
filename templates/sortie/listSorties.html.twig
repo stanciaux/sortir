@@ -10,39 +10,6 @@
         {% endfor %}
     {% endfor %}
 
-    {#    {{ form_start(filtreForm) }}#}
-    {#    <p>Filtrer les sorties</p>#}
-    {#    <div class="col-sm-12 form-group row">#}
-    {#    <div class="inline-block col-5">#}
-    {#        <div class="row filtre">#}
-    {#            {{ form_label(filtreForm.site) }}{{ form(filtreForm.site) }}#}
-    {#        </div>#}
-    {#        <div class="row filtre">#}
-    {#            {{ form_label(filtreForm.search) }}{{ form(filtreForm.search) }}#}
-    {#            <label class="col-form-label col-form-label-sm col-6" for="search">Le nom de la sortie contient#}
-    {#                : </label>#}
-    {#            <input class="form-control form-control-sm col-6" type="search" name="search" id="search"#}
-    {#                   placeholder="search">#}
-    {#        </div>#}
-    {#        <div class="row col-12 filtre">#}
-    {#            {{ form_label(filtreForm.dateDebut) }}{{ form(filtreForm.dateDebut) }}#}
-    {#            {{ form_label(filtreForm.dateFin) }}{{ form(filtreForm.dateFin) }}#}
-    {#            <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateDebut">entre</label>#}
-    {#            <input class="form-control form-control-sm col-4" type="date" name="dateDebut" id="dateDebut">#}
-
-    {#            <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateFin">et</label>#}
-    {#            <input class="form-control form-control-sm col-4" type="date" name="dateFin" id="dateFin">#}
-
-
-    {#        </div>#}
-    {#    </div>#}
-
-    {#    {{ form_end(filtreForm) }}#}
-
-
-
-
-
         <form action="{{ url('sortie_list') }}" method="post" class="form-example container-fluid">
             <p>Filtrer les sorties</p>
             <div class="col-sm-12 form-group row">
@@ -62,16 +29,11 @@
                         <input class="form-control form-control-sm col-6" type="search" name="search" id="search" placeholder="search">
                     </div>
                     <div class="row col-12 filtre">
+                        <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateDebut">entre</label>
+                        <input class="form-control form-control-sm col-4" type="date" name="dateDebut" id="dateDebut">
 
-
-
-                            <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateDebut">entre</label>
-                            <input class="form-control form-control-sm col-4" type="date" name="dateDebut" id="dateDebut">
-
-                            <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateFin">et</label>
-                            <input class="form-control form-control-sm col-4" type="date" name="dateFin" id="dateFin">
-
-
+                        <label class="col-sm-2 col-form-label col-form-label-sm col-2" for="dateFin">et</label>
+                        <input class="form-control form-control-sm col-4" type="date" name="dateFin" id="dateFin">
                     </div>
                 </div>
 
@@ -92,7 +54,7 @@
                     </div>
                 </div>
                 <div class="inline-block col-sm-2 col-2">
-                    <input class="bouton btn btn-outline-dark" type="submit" value="Rechercher">
+                    <input class="bouton btn btn-outline-dark" type="submit" value="Rechercher" name="rechercher">
                 </div>
             </div>
         </form>
@@ -112,6 +74,7 @@
         </thead>
         <tbody>
         {% for sortie in sorties %}
+            {% if sortie.etat.id != 7 %}
             <tr>
                 <td><a href="{{ path('sortie_detail', {'id':sortie.id}) }}">{{ sortie.nom }}</a></td>
                 <td>{{ sortie.dateSortie | format_datetime(locale='fr') }}</td>
@@ -132,27 +95,30 @@
 {#                    ACTIONS POSSIBLES#}
 {#                    SORTIE EN CREA + ORG CONNECTE#}
                 <div id="actions">
-                    {% if sortie.etat.id == 1 and sortie.organisateur.id == app.user.id %}
+                    {% if sortie.isModifiable(app.user) %}
                         <form action="" method="post">
                             <button id="boutonsActions" type="submit" title="Modifier">
                                 <img src="{{ asset('img/icons8-modifier-16.png') }}">
                             </button>
                         </form>
+                    {% endif %}
+                    {% if sortie.isSupprimable(app.user) %}
                         <form action="{{ path('delete_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Supprimer">
                                 <img src="{{ asset('img/icons8-effacer-16.png') }}">
                             </button>
                         </form>
+                    {% endif %}
+                    {% if sortie.isPubliable(app.user) %}
                         <form action="{{ path('publish_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Publier">
                                 <img src="{{ asset('img/icons8-épingle-16.png') }}">
                             </button>
                         </form>
-
                     {% endif %}
 
-{#                    SORTIE OUVERTE + ORG CONNECTE#}
-                    {% if sortie.etat.id == 2 and sortie.organisateur.id == app.user.id %}
+{#                    SORTIE OUVERTE + ORG CONNECTE ou ADMIN #}
+                    {% if sortie.isAnnulable(app.user) %}
                         <form action="{{ path('cancel_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Annuler">
                                 <img src="{{ asset('img/icons8-annuler-2-16.png') }}">
@@ -163,7 +129,7 @@
 {#                        INSCRIPTION POSSIBLE #}
 {#                        SI PAS INSCRIT, ETAT OUVERT, NB INSCRIP MAX NON ATTEINT ET DATE CLOTURE NON ATTEINTE #}
                     {% if app.user.isInscrit(sortie) == false
-                        and sortie.isInscrirePossible() %}
+                        and sortie.isInscrirePossible(app.user) %}
                              <form action="{{ path('sortie_subscribe', {'id':sortie.id}) }}" method="post">
                                 <button id="boutonsActions" type="submit" title="S'inscrire">
                                     <img src="{{ asset('img/icons8-add-user-male-16.png') }}">
@@ -185,8 +151,7 @@
 
 {#                    ARCHIVAGE POSSIBLE #}
 {#                    SI ADMIN #}
-                    {% if is_granted('ROLE_ADMIN')
-                        and sortie.isArchivagePossible() %}
+                    {% if sortie.isArchivagePossible(app.user) %}
                         <form action="{{ path('archive_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Archiver">
                                 <img src="{{ asset("img/icons8-archive-16.png") }}">
@@ -196,6 +161,7 @@
                 </div>
                 </td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

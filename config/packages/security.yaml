@@ -49,5 +49,5 @@ security:
          - { path: ^/sites/list, roles: ROLE_ADMIN }
 
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
+#        ROLE_ADMIN: ROLE_USER
 

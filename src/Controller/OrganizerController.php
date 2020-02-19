@@ -24,6 +24,7 @@ class OrganizerController extends AbstractController
 {
     /**
      * @Route("/organizer", name="organizer")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function newParty(Request $request, EntityManagerInterface $em)
     {
@@ -147,7 +148,7 @@ class OrganizerController extends AbstractController
 //        $dateJour = new \DateTime();
 //        $interval = $dateJour->diff($dateSortie);
 
-        if ($sortieAarchiver->isArchivagePossible()) {
+        if ($sortieAarchiver->isArchivagePossible($this->getUser())) {
             $sortieAarchiver->setEtat($etatArchive);
             $em->flush();
             $this->addFlash('success', 'La sortie a été archivée');
@@ -162,14 +163,14 @@ class OrganizerController extends AbstractController
 
     /**
      * @Route("/publishParty/{id}", name="publish_party", methods={"POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function publish($id, EntityManagerInterface $em)
     {
-        $etatCree = $em->getRepository(Etat::class)->find(1);
         $etatOuvert = $em->getRepository(Etat::class)->find(2);
         $sortieAouvrir = $em->getRepository(Sortie::class)->find($id);
 
-        if ($sortieAouvrir->getEtat() == $etatCree) {
+        if ($sortieAouvrir->isPubliable($this->getUser())) {
             $sortieAouvrir->setEtat($etatOuvert);
             $em->flush();
             $this->addFlash('success', "La sortie est désormais ouverte aux inscriptions");
@@ -184,36 +185,24 @@ class OrganizerController extends AbstractController
 
     /**
      * @Route("/cancelParty/{id}", name="cancel_party", methods={"POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function cancel($id, EntityManagerInterface $em, Request $request)
     {
-//        $sorties = $em->getRepository(Sortie::class)->findAll();
-//        $sites = $em->getRepository(Site::class)->findAll();
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
-        $organisateur = $sortie->getOrganisateur();
-        $orgId = $organisateur->getId();
-        $user = $this->getUser();
-        $userId = $user->getId();
         $etatAnnule = $em->getRepository(Etat::class)->find(6);
-        $dateJour = new \DateTime();
+
         $formAnnulation = $this->createForm(SortieType::class, $sortie);
         $formAnnulation->handleRequest($request);
 
         if ($formAnnulation->isSubmitted() && $formAnnulation->isValid()
-            and $sortie->getEtat()->getId() == 2
-            and $orgId == $userId
-            and $dateJour <= $sortie->getDateSortie()) {
+            && $sortie->isAnnulable($this->getUser()) ) {
             $sortie->setEtat($etatAnnule);
             $em->flush();
 
             $this->addFlash('success', "Sortie annulée");
             return $this->redirectToRoute('sortie_list');
-//            return $this->redirectToRoute('sortie_list',
-//                [
-//                    "sorties" => $sorties,
-//                    "sites" => $sites
-//                ]);
         }
 
         return $this->render('sortie/cancelParty.html.twig',
@@ -225,13 +214,13 @@ class OrganizerController extends AbstractController
 
     /**
      * @Route("/deleteParty/{id}", name="delete_party", methods={"POST"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function delete($id, EntityManagerInterface $em)
     {
         $sortieAsupprimer = $em->getRepository(Sortie::class)->find($id);
-        $etatCree = $em->getRepository(Etat::class)->find(1);
 
-        if ($sortieAsupprimer->getEtat() == $etatCree) {
+        if ($sortieAsupprimer->isSupprimable($this->getUser())) {
             $em->remove($sortieAsupprimer);
             $em->flush();
             $this->addFlash('success', "La sortie a été supprimée");
