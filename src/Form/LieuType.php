@@ -19,26 +19,32 @@ class LieuType extends AbstractType
     {
 
         $builder
-            ->add('nomLieu', TextType::class, [
-                'label' => 'Nom'
-            ])
-            ->add('rue', TextType::class)
-            ->add('latitude', TextType::class)
-            ->add('longitude', TextType::class)
-            ->add('ville', EntityType::class, [
-                'class' => Ville::class,
-                'choice_label' => 'nomVille',
-                'query_builder' => function(EntityRepository $repository) {
-                    return $repository->createQueryBuilder('c')->orderBy('c.nomVille', 'ASC');
-                }
-            ])
-            ->add('send',SubmitType::class, [
-                'label' => 'Ajouter',
-                'attr' => [
-                    'class' => 'btn btn-dark btn-sn'
-                ]
-            ])
-        ;
+        ->add('nomLieu', TextType::class, [
+            'label' => 'Nom :'
+        ])
+        ->add('rue', TextType::class, [
+            'label' => 'Rue :'
+        ])
+        ->add('latitude', TextType::class, [
+            'label' => 'Latitude :'
+        ])
+        ->add('longitude', TextType::class, [
+            'label' => 'Longitude :'
+        ])
+        ->add('ville', EntityType::class, [
+            'label' => 'Ville :',
+            'class' => Ville::class,
+            'choice_label' => 'nomVille',
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('c')->orderBy('c.nomVille', 'ASC');
+            }
+        ])
+        ->add('enregistrer', SubmitType::class, [
+            'label' => 'Ajouter',
+            'attr' => [
+                'class' => 'btn btn-primary btn-sn'
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
