@@ -70,30 +70,37 @@ class SortieRepository extends ServiceEntityRepository
             $qb->andWhere('s.organisateur = :organisateur');
             $qb->setParameter('organisateur', $param['user']);
         }
-        // si l'utilisateur est inscrit. Récupération de l'idUser pour faire la recherche inscrit.
-        if ($param['inscrit']) {
-            // Jointure entre sorties et inscriptions
-            $qb->join('s.inscriptions', 'i');
-            // Jointure entre inscriptions et participant/user
-            $qb->join('i.participant', 'p');
-            // Conditionnelle où le participant est le user
-            $qb->andWhere('p = :user');
-            $qb->setParameter('user', $param['user']);
-        }
-        // Sorties où l'utilisateur n'est pas inscrit
-        if ($param['nonInscrit']) {
-            // On commence par rechercher les sorties auxquelles l'utilisateur est inscrit
-            $qb2 = $this->createQueryBuilder('s2')
-                ->select('s2.id')
-                ->join('s2.inscriptions', 'i2')
-                ->join('i2.participant', 'p2')
-                ->andWhere('p2 = :user2')
+        // Recherche sur les inscriptions
+        if ($param['inscrit'] && $param['nonInscrit'])
+        {
+            // On ne fait rien.
+        } else
+        {
+            // si l'utilisateur est inscrit. Récupération de l'idUser pour faire la recherche inscrit.
+            if ($param['inscrit']) {
+                // Jointure entre sorties et inscriptions
+                $qb->join('s.inscriptions', 'i');
+                // Jointure entre inscriptions et participant/user
+                $qb->join('i.participant', 'p');
+                // Conditionnelle où le participant est le user
+                $qb->andWhere('p = :user');
+                $qb->setParameter('user', $param['user']);
+            }
+            // Sorties où l'utilisateur n'est pas inscrit
+            if ($param['nonInscrit']) {
+                // On commence par rechercher les sorties auxquelles l'utilisateur est inscrit
+                $qb2 = $this->createQueryBuilder('s2')
+                    ->select('s2.id')
+                    ->join('s2.inscriptions', 'i2')
+                    ->join('i2.participant', 'p2')
+                    ->andWhere('p2 = :user2')
                 ;
-            // Seconde requête pour chercher toutes les sorties moins celles auxquelles l'utilisateur est inscrit ($qb2).
-            // La fonction notIn() permet de faire le tri.
-            $qb->andWhere($qb->expr()->notIn('s.id', $qb2->getDQL()))
-                // Attention le setParameter() du $qb2 doit se mettre à la fin.
-                ->setParameter(':user2', $param['user']);
+                // Seconde requête pour chercher toutes les sorties moins celles auxquelles l'utilisateur est inscrit ($qb2).
+                // La fonction notIn() permet de faire le tri.
+                $qb->andWhere($qb->expr()->notIn('s.id', $qb2->getDQL()))
+                    // Attention le setParameter() du $qb2 doit se mettre à la fin.
+                    ->setParameter(':user2', $param['user']);
+            }
         }
 
         // sorties passées

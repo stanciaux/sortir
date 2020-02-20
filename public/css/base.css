@@ -109,8 +109,16 @@ table tr {
    margin-left: 1em;
 }
 
+<<<<<<< HEAD
 
 .btng {
+=======
+.d-flex {
+   text-align: center;
+}
+#username
+.btn {
+>>>>>>> feature/dernièresModifs
    display:block;
    width:150px;
    line-height:50px;
