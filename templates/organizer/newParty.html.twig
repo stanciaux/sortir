@@ -2,12 +2,20 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
+    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
     {{ form_start(form) }}
     {{ form_errors(form) }}
 
-    <div class="jumbotron mt-2">
-        <h1 class="text-center display-4 lead">{{ page_name }}</h1>
-        <div class="form-row form-group row nom">
+
+    <div class="container">
+        <h3 id="textcenter">{{ page_name }}</h3>
+        <div class="form-row row nom">
             <div class="form-group col-sm-6">
                 <div class="row">
                     <div class="col-6"><p>{{ form_label(form.nom) }}</p></div>
@@ -32,8 +40,8 @@
                 <br>
                 <div class="row">
                     <div class="col-6"><p>{{ form_label(form.duree) }}</p></div>
-                    <div class="col-2">{{ form_widget(form.duree) }}</div>
-                    <div class="col-4"><p></p> minutes</div>
+                    <div class="col-4">{{ form_widget(form.duree) }}</div>
+                    <div class="col-2"><p></p> minutes</div>
                 </div>
                 <br>
                 <div class="row">
@@ -41,12 +49,13 @@
                     <div class="col-6">{{ form_widget(form.descriptionInfos) }}</div>
                 </div>
             </div>
-            <div class="form-group col-sm-6">
+            <div class="col-sm-6">
                 <div class="row">
                     <div class="col-4"><p>{{ form_label(form.lieu) }}</p></div>
                     <div class="col-6">{{ form(form.lieu) }}</div>
                     <a href="{{ path('lieu') }}">
-                        <img class="imgajouter" src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"/>
+                        <img class="imgajouter" src="{{ asset('img/ajouter.png') }}" alt="Ajouter un lieu"
+                             title="Ajouter un lieu"/>
                     </a>
                 </div>
                 <div class="row">
@@ -54,58 +63,55 @@
                     <div class="col-8">{{ form_widget(form.site) }}</div>
                 </div>
             </div>
-            <div class="row">
-                <div class="d-flex justify-content-center">
-                    {{ form_widget(form.Enregistrer) }}
-                    <a href="{{ path('sortie_list') }}" class="btn btn-primary btn-sn submit">Annuler</a>
-                    {{ form_widget(form.PublierLaSortie) }}
+            <div class="row col-sm-9 offset-3">
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        {{ form_widget(form.Enregistrer) }}
+                        <a href="{{ path('sortie_list') }}" id="btn-soumission-profil"
+                           class="btn btn-outline-dark btn-soumission">Annuler</a>
+                        {{ form_widget(form.PublierLaSortie) }}
+                    </div>
                 </div>
             </div>
-
-
             {{ form_end(form) }}
-{#            <div class="modal-body">#}
+            {#            <div class="modal-body">#}
+            {#                <div class="row">#}
+            {#                    <div class="col-6"><p>Ville :</p></div>#}
+
+            {#                    <select class="col-6" id="selectVilleLieu">#}
+            {#                        {% for ville in listVille %}#}
+            {#                            <option>{{ ville.nomVille }}</option>#}
+            {#                        {% endfor %}#}
+            {#                    </select>#}
+            {#                </div>#}
+            {#                <div class="row">#}
+            {#                    <div class="col-6"><p>Rue :</p></div>#}
+            {#                    <div class="col-6">#}
+            {#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
+            {#                               placeholder=""></div>#}
+            {#                </div>#}
+            {#                <div class="row">#}
+            {#                    <div class="col-6"><p>Code postal :</p></div>#}
+            {#                    <div class="col-6">#}
+            {#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
+            {#                               placeholder=""></div>#}
+            {#                </div>#}
+            {#                <div class="row">#}
+            {#                    <div class="col-6"><p>Latitude :</p></div>#}
+            {#                    <div class="col-6">#}
+            {#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
+            {#                               placeholder=""></div>#}
+            {#                </div>#}
+            {#                <div class="row">#}
+            {#                    <div class="col-6"><p>Longitude :</p></div>#}
+            {#                    <div class="col-6">#}
+            {#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
+            {#                               placeholder=""></div>#}
+            {#                </div>#}
 
 
-{#                <div class="row">#}
-{#                    <div class="col-6"><p>Ville :</p></div>#}
-
-{#                    <select class="col-6" id="selectVilleLieu">#}
-{#                        {% for ville in listVille %}#}
-{#                            <option>{{ ville.nomVille }}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-6"><p>Rue :</p></div>#}
-{#                    <div class="col-6">#}
-{#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
-{#                               placeholder=""></div>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-6"><p>Code postal :</p></div>#}
-{#                    <div class="col-6">#}
-{#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
-{#                               placeholder=""></div>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-6"><p>Latitude :</p></div>#}
-{#                    <div class="col-6">#}
-{#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
-{#                               placeholder=""></div>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-6"><p>Longitude :</p></div>#}
-{#                    <div class="col-6">#}
-{#                        <input type="nom" class="formVille" id="nomLieu" aria-describedby="nomLieu"#}
-{#                               placeholder=""></div>#}
-{#                </div>#}
-
-
-{#            </div>#}
-{#        </div>#}
-
-{#    </div>#}
-
+            {#            </div>#}
+        </div>
+    </div>
 
 {% endblock %}

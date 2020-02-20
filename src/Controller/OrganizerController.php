@@ -56,7 +56,7 @@ class OrganizerController extends AbstractController
             // On enregistre notre objet $lieu dans la base de données
             $em->persist($lieu);
             $em->flush();
-            $this->addFlash('success', 'Le lieu a été ajouté !');
+//            $this->addFlash('success', 'Le lieu a été ajouté !');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {

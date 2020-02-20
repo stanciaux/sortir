@@ -42,7 +42,8 @@ class LieuType extends AbstractType
         ->add('enregistrer', SubmitType::class, [
             'label' => 'Ajouter',
             'attr' => [
-                'class' => 'btn btn-primary btn-sn'
+                'class' => 'btn btn-outline-dark btn-soumission',
+                'id' => 'btn-soumission-profil'
             ]
         ]);
     }

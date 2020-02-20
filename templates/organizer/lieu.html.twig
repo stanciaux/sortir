@@ -5,36 +5,38 @@
     {{ form_start(lieuForm) }}
     {{ form_errors(lieuForm) }}
     <div class="container">
-        <div class="jumbotron mt-2">
-            <h1 class="text-center display-4 lead">{{ page_name }}</h1>
+
+        <h3 id="textcenter">{{ page_name }}</h3>
+        <div class="row col-sm-8 offset-4">
             <div class="form-row form-group row nom">
                 <div class="form-group col-sm-6">
-                <div class="row">
-                    <div class="col-6"><p>{{ form_label(lieuForm.nomLieu) }}</p></div>
-                    <div class="col-6">{{ form_widget(lieuForm.nomLieu) }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-6"><p>{{ form_label(lieuForm.rue) }}</p></div>
-                    <div class="col-6">{{ form_widget(lieuForm.rue) }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-6"><p>{{ form_label(lieuForm.latitude) }}</p></div>
-                    <div class="col-6">{{ form_widget(lieuForm.latitude) }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-6"><p>{{ form_label(lieuForm.longitude) }}</p></div>
-                    <div class="col-6">{{ form_widget(lieuForm.longitude) }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-6"><p>{{ form_label(lieuForm.ville) }}</p></div>
-                    <div class="col-6">{{ form_widget(lieuForm.ville) }}</div>
-                </div>
-                <div class="row">
-                    <div class="d-flex justify-content-center">
-                        <a href="{{ path('organizer') }}" class="btn btn-secondary">Retour</a>
-                        {{ form_widget(lieuForm.enregistrer) }}
+                    <div class="row">
+                        <div class="col-8"><p>{{ form_label(lieuForm.nomLieu) }}</p></div>
+                        <div class="col-4">{{ form_widget(lieuForm.nomLieu) }}</div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-8"><p>{{ form_label(lieuForm.rue) }}</p></div>
+                        <div class="col-4">{{ form_widget(lieuForm.rue) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8"><p>{{ form_label(lieuForm.latitude) }}</p></div>
+                        <div class="col-4">{{ form_widget(lieuForm.latitude) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8"><p>{{ form_label(lieuForm.longitude) }}</p></div>
+                        <div class="col-4">{{ form_widget(lieuForm.longitude) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8"><p>{{ form_label(lieuForm.ville) }}</p></div>
+                        <div class="col-4">{{ form_widget(lieuForm.ville) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ path('organizer') }}" id="btn-soumission-profil"
+                               class="btn btn-outline-dark btn-soumission">Retour</a>
+                            {{ form_widget(lieuForm.enregistrer) }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

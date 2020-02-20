@@ -71,13 +71,15 @@ class OrganizerType extends AbstractType
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-sn submit'
+                    'class' => 'btn btn-outline-dark btn-soumission',
+                    'id' => 'btn-soumission-profil'
                 ]
             ])
             ->add('PublierLaSortie', SubmitType::class, [
                 'label' => 'Publier la sortie',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-sn submit'
+                    'class' => 'btn btn-outline-dark btn-soumission',
+                    'id' => 'btn-soumission-profil'
                 ]
             ]);
 //            ->add('Annuler', SubmitType::class, [
