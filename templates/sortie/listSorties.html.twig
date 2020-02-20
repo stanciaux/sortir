@@ -151,7 +151,7 @@
 
 {#                    ARCHIVAGE POSSIBLE #}
 {#                    SI ADMIN #}
-                    {% if sortie.isArchivagePossible(app.user) %}
+                    {% if sortie.isArchivable(app.user) %}
                         <form action="{{ path('archive_party', {'id':sortie.id}) }}" method="post">
                             <button id="boutonsActions" type="submit" title="Archiver">
                                 <img src="{{ asset("img/icons8-archive-16.png") }}">

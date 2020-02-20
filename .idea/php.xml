@@ -87,6 +87,7 @@
       <path value="$PROJECT_DIR$/vendor/pugx/autocompleter-bundle" />
       <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
       <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
     </include_path>
   </component>
 </project>

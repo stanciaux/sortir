@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -56,6 +57,9 @@ class User implements UserInterface
     private $site;
 
     /**
+     * @Assert\Length(min="10", max="10",
+     *     minMessage="Le numéro de téléphone doit comprendre 10 chiffres",
+     *     maxMessage="Le numéro de téléphone doit comprendre 10 chiffres")
      * @ORM\Column(type="string", length=10)
      */
     private $telephone;
