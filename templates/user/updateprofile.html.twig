@@ -11,6 +11,10 @@
 
     <div class="col-8 offset-2">
     {{ form_start(userUpdateForm) }}
+{#        <div class="row">#}
+{#            <div class="col-4"><p>{{ form_label(userUpdateForm.password.first) }}</p></div>#}
+{#            <div class="col-8">{{ form_widget(userUpdateForm.password) }}</div>#}
+{#        </div>#}
     {{ form_widget(userUpdateForm) }}
         <div class="center-div">
             <button id="btn-soumission-profil" class="btn btn-outline-dark btn-soumission" type="submit">Enregistrer</button>

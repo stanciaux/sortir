@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,8 +19,9 @@ class UserType extends AbstractType
 //            ->add('pseudo')
             ->add('nom')
             ->add('prenom')
+            ->add('pseudo')
             ->add('telephone')
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('password', TextType::class)
             ->add('password', RepeatedType::class,
                 [
@@ -30,12 +32,18 @@ class UserType extends AbstractType
                     'required' => false,
                     // mapped à false pour ne pas le lier à l'entité user et qu'il ne récupère pas le hash du mdp
                     'mapped' => false,
-                    'first_options'  => ['label' => 'Mot de passe'],
-                    'second_options' => ['label' => 'Confirmation mot de passe'],
+                    'first_options' => [
+                        'label' => 'Nouveau mot de passe',
+                    ],
+                    'second_options' => [
+                        'label' => 'Confirmation mot de passe',
+                    ],
+                    'row_attr' => ['class' => 'row'],
+                    'help_attr' => ['class' => 'helpClass'],
                 ])
+            // Appel des labels optionnels avec un .first et .second
 //            ->add('roles')
-            ->add('site')
-        ;
+            ->add('site');
     }
 
 
