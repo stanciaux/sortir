@@ -39,6 +39,7 @@ class UserController extends AbstractController
         return $this->render('user/updateprofile.html.twig', [
             "userUpdateForm" => $userUpdateForm->createView()
         ]);
+
     }
 
     /**
@@ -56,13 +57,13 @@ class UserController extends AbstractController
     /**
      * @Route("/update_Photo", name="update_Photo")
      */
-    public function updateAvatar(EntityManagerInterface $em, Request $request, FileUploader $fileUploader)
+    public function updatePhoto(EntityManagerInterface $em, Request $request, FileUploader $fileUploader)
     {
         $user = $this->getUser();
-        $avatarForm = $this->createForm(PhotoType::class,$user);
-        $avatarForm->handleRequest($request);
+        $photoForm = $this->createForm(PhotoType::class,$user);
+        $photoForm->handleRequest($request);
 
-        if ($avatarForm->isSubmitted() && $avatarForm->isValid())
+        if ($photoForm->isSubmitted() && $photoForm->isValid())
         {
             // on place l'URL du fichier upload dans une variable $file
             $file = $user->getPhoto();
@@ -78,6 +79,7 @@ class UserController extends AbstractController
 
             $em->persist($user);
             $em->flush();
+            dump($user);
 
             $this->addFlash('success', 'Photo modifiée avec succès.');
             return $this->render('home', [
@@ -86,7 +88,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/updateprofile.html.twig', [
-            'avatarForm' => $avatarForm->createView()
+            'photoForm' => $photoForm->createView()
         ]);
     }
 

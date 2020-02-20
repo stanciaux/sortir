@@ -16,6 +16,7 @@ class UserType extends AbstractType
     {
         $builder
 //            ->add('pseudo')
+            ->add('photo', PhotoType::class)
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
@@ -42,6 +43,7 @@ class UserType extends AbstractType
 //            ->add('roles')
             ->add('site')
         ;
+        dump($builder);
     }
 
 
