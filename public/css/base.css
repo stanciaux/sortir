@@ -108,30 +108,8 @@ table tr {
    margin-right: 1em;
    margin-left: 1em;
 }
-
-<<<<<<< HEAD
-
-.btng {
-=======
 .d-flex {
    text-align: center;
-}
-#username
-.btn {
->>>>>>> feature/dernièresModifs
-   display:block;
-   width:150px;
-   line-height:50px;
-   text-align:center;
-   vertical-align:middle;
-   text-decoration:none;
-   margin : auto 25px;
-}
-
-.btngg {
-   display: block;
-   width: fit-content;
-   margin: auto 100px;
 }
 
 #annulation_motifAnnulation {
