@@ -20,18 +20,26 @@ class UserController extends AbstractController
      * @Route("/update/{id}", name="update")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function update($id, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface  $pwdEncoder)
+    public function update($id, EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $pwdEncoder)
     {
         $user = $em->getRepository(User::class)->find($id);
         $userUpdateForm = $this->createForm(UserType::class, $user);
         $userUpdateForm->handleRequest($request);
-        if ($userUpdateForm->isSubmitted() && $userUpdateForm->isValid())
-        {
-            if ($user->getPseudo()){
-            $hash = $pwdEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hash);
-            $em->flush();
+        if ($userUpdateForm->isSubmitted() && $userUpdateForm->isValid()) {
+
+            // récupération d'un nouveau mot de passe s'il y en a un de passé dans le champ "nouveau mdp"
+            $password = $userUpdateForm->get('password')->getData();
+
+            // S'il y a un nouveau mdp, on le hash et le charge en bdd
+            if ($password) {
+//                dump($user->getPassword());
+//                dd($userUpdateForm->get('password')->getData());
+                $hash = $pwdEncoder->encodePassword($user, $password);
+                $user->setPassword($hash);
+
+//            $em->flush();
             }
+            $em->persist($user);
             $em->flush();
 
             $this->addFlash('success', "Votre profil a été modifié");

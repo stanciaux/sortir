@@ -96,3 +96,14 @@ table tr {
    width: 40px;
    height: 40px;
 }
+
+.center-div{
+   text-align: center;
+}
+
+.btn-soumission{
+   width: 10em;
+}
+#btn-soumission-profil{
+   margin-right: 1em;
+}
