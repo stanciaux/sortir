@@ -71,8 +71,9 @@ class OrganizerController extends AbstractController
             $etatOuvert = $em->getRepository(Etat::class)->find(1);
             if ($form->get('Enregistrer')->isClicked()) {
                 $sortie->setEtat($etatCree);
-            } elseif ($form->get('publish')->isClicked()) {
+            } elseif ($form->get('PublierLaSortie')->isClicked()) {
                 $sortie->setEtat($etatOuvert);
+//                return $this->redirectToRoute('publish_party', ['id' => $sortie->getId()]);
             } else {
                 return $this->redirectToRoute('sortie_list');
             }
