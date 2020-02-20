@@ -84,7 +84,6 @@ table tr {
 }
 
 .nom {
-
    margin-top: 20px;
 }
 
@@ -121,4 +120,8 @@ table tr {
    vertical-align:middle;
    text-decoration:none;
    color: #005cbf;
+}
+
+#annulation_motifAnnulation {
+   width: 15em;
 }
