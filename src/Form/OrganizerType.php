@@ -24,6 +24,7 @@ class OrganizerType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie :',
+                'required' => true,
             ])
             ->add('dateSortie', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie :',

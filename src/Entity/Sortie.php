@@ -32,6 +32,10 @@ class Sortie
     private $duree;
 
     /**
+     * @Assert\GreaterThan("today",
+     *      message="La date de clôture des inscripritions doit être supérieure à la date du jour")
+     * @Assert\Expression("this.getDateSortie() > this.getDateCloture()",
+     *      message="La date de clôture des inscriptions doit être inférieure à la date de la sortie")
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateCloture;
@@ -48,6 +52,7 @@ class Sortie
     private $descriptionInfos;
 
     /**
+     * @Assert\IsNull()
      * @ORM\Column(type="string", length=250, nullable=true)
      */
     private $urlPhoto;
@@ -314,19 +319,25 @@ class Sortie
         return true;
     }
 
-    public function isArchivagePossible(User $user): bool
+    public function isArchivable(User $user): bool
     {
         $dateJour = new \DateTime();
         $interval = $dateJour->diff($this->dateSortie);
-        if ($interval->days < 30) {
+
+        if ($interval->days < 30 || $interval->days < -30) {
             return false;
         }
-        if ($this->etat->getLibelle() == Etat::ARCHIVEE){
+        if ($this->etat->getLibelle() == Etat::CREEE
+            || $this->etat->getLibelle() == Etat::OUVERTE
+            || $this->etat->getLibelle() == Etat::CLOTUREE
+            || $this->etat->getLibelle() == Etat::ENCOURS
+            || $this->etat->getLibelle() == Etat::ARCHIVEE ){
             return false;
         }
         if (! in_array("ROLE_ADMIN", $user->getRoles())){
             return false;
         }
+
         return true;
     }
 

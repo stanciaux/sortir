@@ -93,7 +93,6 @@ class OrganizerController extends AbstractController
                 'form' => $form->createView(),
                 'formLieu' => $formLieu->createView(),
                 'listVille' => $listVille
-
             ]);
     }
 
@@ -128,7 +127,7 @@ class OrganizerController extends AbstractController
         $etatArchive = $em->getRepository(Etat::class)->find(7);
         $sortieAarchiver = $em->getRepository(Sortie::class)->find($id);
 
-        if ($sortieAarchiver->isArchivagePossible($this->getUser())) {
+        if ($sortieAarchiver->isArchivable($this->getUser())) {
             $sortieAarchiver->setEtat($etatArchive);
             $em->flush();
             $this->addFlash('success', 'La sortie a été archivée');
