@@ -97,6 +97,7 @@ table tr {
    height: 40px;
 }
 
+
 .center-div{
    text-align: center;
 }
@@ -104,6 +105,20 @@ table tr {
 .btn-soumission{
    width: 10em;
 }
-#btn-soumission-profil{
+#btn-soumission-profil {
    margin-right: 1em;
+}
+
+.d-flex {
+   text-align: center;
+}
+
+.btn {
+   display:block;
+   width:150px;
+   line-height:50px;
+   text-align:center;
+   vertical-align:middle;
+   text-decoration:none;
+   color: #005cbf;
 }

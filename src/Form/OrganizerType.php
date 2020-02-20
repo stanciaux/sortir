@@ -71,21 +71,21 @@ class OrganizerType extends AbstractType
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-dark submit'
+                    'class' => 'btn btn-primary btn-sn submit'
                 ]
             ])
             ->add('PublierLaSortie', SubmitType::class, [
                 'label' => 'Publier la sortie',
                 'attr' => [
-                    'class' => 'btn btn-dark submit'
-                ]
-            ])
-            ->add('Annuler', SubmitType::class, [
-                'label' => 'Annuler',
-                'attr' => [
-                    'class' => 'btn btn-dark submit'
+                    'class' => 'btn btn-primary btn-sn submit'
                 ]
             ]);
+//            ->add('Annuler', SubmitType::class, [
+//                'label' => 'Annuler',
+//                'attr' => [
+//                    'class' => 'btn btn-primary btn-sn submit'
+//                ]
+//            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
