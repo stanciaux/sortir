@@ -10,11 +10,15 @@
     <div class="row">
         <div class="col-8 offset-2">
             {{ form_start(form) }}
-            {{ form_widget(form) }}<button type="submit">Modifier</button>
+            {{ form_widget(form) }}
+            <div  class="center-div">
+            <button id="btn-soumission-profil" class="btn btn-outline-dark" type="submit">Modifier</button>
+            <a class="btn btn-outline-dark" href="{{ path('sortie_list') }}">Annuler</a>
+            </div>
             {{ form_end(form) }}
         </div>
 
     </div>
-    <a class="btn btn-primary" href="{{ path('sortie_list') }}">Annuler</a>
+
 
 {% endblock %}

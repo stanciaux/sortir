@@ -343,13 +343,17 @@ class Sortie
 
     public function isAnnulable(User $user): bool
     {
-        if ($this->etat->getLibelle() != Etat::OUVERTE) {
+        if ($this->etat->getLibelle() != Etat::OUVERTE
+            && $this->etat->getLibelle() != Etat::CLOTUREE) {
             return false;
         }
         if (
             $this->getOrganisateur()->getId() != $user->getId() &&
             ! in_array("ROLE_ADMIN", $user->getRoles())
         ) {
+            return false;
+        }
+        if ($this->dateSortie < new \DateTime()){
             return false;
         }
         return true;
